@@ -4,6 +4,6 @@ version: 0.1.0
 authors:
   - Didactic Drunk <1479616+didactic-drunk@users.noreply.github.com>
 
-crystal: 1.0.0
+crystal: ">= 0.37"
 
 license: MIT
