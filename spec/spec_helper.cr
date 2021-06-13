@@ -1,2 +1,2 @@
 require "spec"
-require "../src/crypto_secret"
+require "../src/crypto-secret"

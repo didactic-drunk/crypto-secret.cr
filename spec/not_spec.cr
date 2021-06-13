@@ -1,5 +1,5 @@
 require "./spec_helper"
-require "../src/crypto_secret/not"
+require "../src/crypto-secret/not"
 
 describe Crypto::Secret::Not do
   it "works" do
