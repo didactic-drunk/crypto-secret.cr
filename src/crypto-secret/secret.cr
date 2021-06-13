@@ -1,3 +1,5 @@
+require "crypto/subtle"
+
 # Interface to hold sensitive information (often cryptographic keys)
 #
 # **Only for direct use by cryptographic library authors**
@@ -40,5 +42,21 @@ module Crypto::Secret
 
   def finalize
     wipe
+  end
+
+  # Timing safe memory compare
+  def ==(other : Secret): Bool
+    readonly do
+      other.readonly do
+        Crypto::Subtle.constant_time_compare to_slice, other.to_slice
+      end
+    end
+  end
+
+  # Timing safe memory compare
+  def ==(other : Bytes) : Bool
+    readonly do
+      Crypto::Subtle.constant_time_compare to_slice, other.to_slice
+    end
   end
 end
