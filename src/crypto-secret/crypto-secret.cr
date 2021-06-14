@@ -1,0 +1,2 @@
+require "./secret"
+require "./*"
