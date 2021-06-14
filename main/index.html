@@ -80,7 +80,7 @@
 
 <p>Secret providers may implement additional protections via:</p>
 
-<ul><li><code>#noaccess</code>, <code>#readonly</code> or <code>readwrite</code>.</li><li>Using <a href="">mprotect</a> to control access</li><li>Encrypting the data when not in use</li><li>Deriving keys on demand from a HSM</li><li>Preventing the Secret from entering swap (<a href="">mlock</a>)</li><li>Preventing the Secret from entering core dumps</li><li>Other</li></ul>
+<ul><li><code>#noaccess</code>, <code>#readonly</code> or <code>#readwrite</code></li><li>Using <a href="">mprotect</a> to control access</li><li>Encrypting the data when not in use</li><li>Deriving keys on demand from a HSM</li><li>Preventing the Secret from entering swap (<a href="">mlock</a>)</li><li>Preventing the Secret from entering core dumps</li><li>Other</li></ul>
 
 <h2><a id="installation" class="anchor" href="#installation">
   <svg class="octicon-link" aria-hidden="true">
@@ -209,6 +209,8 @@ Allow overriding the default returned key and/or allow users of your class to pr
     <use href="#octicon-link"/>
   </svg>
 </a>What attacks does a Secret protect against?</h2>
+
+<ul><li>Timing attacks when comparing secrets by overriding <code>==</code></li><li>Leaking data in to logs by overriding <code>inspect</code></li><li>Wiping memory when the secret is no longer in use</li></ul>
 
 <p><span class="flag orange">TODO</span>  describe implementations</p>
 
