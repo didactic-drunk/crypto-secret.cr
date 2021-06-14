@@ -8,11 +8,15 @@ describe Crypto::Secret::Not do
     key[1] = 1_u8
 
     secret1 = Crypto::Secret::Not.new key.dup
-    secret1.to_slice.should eq key
+    secret1.to_slice { |s| s.should eq key }
 
     secret2 = Crypto::Secret::Not.new key.dup
 
     (secret1 == secret2).should be_true
-    (secret1 == secret2.to_slice).should be_true
+    secret1.to_slice do |s1|
+      secret2.to_slice do |s2|
+        (s1 == s2).should be_true
+      end
+    end
   end
 end

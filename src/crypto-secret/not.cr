@@ -13,4 +13,8 @@ struct Crypto::Secret::Not
   def to_slice : Bytes
     @bytes
   end
+
+
+  delegate_to_slice @bytes
+  delegate_to_bytesize @bytes
 end
