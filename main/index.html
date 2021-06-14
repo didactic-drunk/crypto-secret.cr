@@ -51,31 +51,6 @@
   <div class="types-list">
     <ul>
   
-  <li class="parent " data-id="crypto-secret/Crypto" data-name="crypto">
-      <a href="Crypto.html">Crypto</a>
-      
-        <ul>
-  
-  <li class="parent " data-id="crypto-secret/Crypto/Secret" data-name="crypto::secret">
-      <a href="Crypto/Secret.html">Secret</a>
-      
-        <ul>
-  
-  <li class=" " data-id="crypto-secret/Crypto/Secret/Not" data-name="crypto::secret::not">
-      <a href="Crypto/Secret/Not.html">Not</a>
-      
-    </li>
-  
-</ul>
-
-      
-    </li>
-  
-</ul>
-
-      
-    </li>
-  
 </ul>
 
   </div>
@@ -94,7 +69,13 @@
 <img src="https://img.shields.io/github/commits-since/didactic-drunk/crypto-secret.cr/latest" alt="GitHub commits since latest release (by date) for a branch"/>
 <a href="https://didactic-drunk.github.io/crypto-secret.cr/main"><img src="https://img.shields.io/badge/docs-available-brightgreen.svg" alt="Docs"/></a></p>
 
-<p>Interface intended to hold sensitive information.</p>
+<p>Secrets hold sensitive information</p>
+
+<p>The Secret interface manages limited time access to the secret and securely erasing the secret when no longer needed.</p>
+
+<p>Secret providers may implement additional protections via:</p>
+
+<ul><li><code>#noaccess</code>, <code>#readonly</code> or <code>readwrite</code>.</li><li>Using <a href="">mprotect</a> to control access</li><li>Encrypting the data when not in use</li><li>Deriving keys on demand from a HSM</li><li>Preventing the Secret from entering swap (<a href="">mlock</a>)</li><li>Preventing the Secret from entering core dumps</li><li>Other</li></ul>
 
 <h2><a id="installation" class="anchor" href="#installation">
   <svg class="octicon-link" aria-hidden="true">
@@ -122,7 +103,45 @@
 
 <pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;crypto-secret/not&quot;</span>
 
-not_secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Not</span>.<span class="k">new</span> <span class="n">32</span></code></pre>
+not_secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Not</span>.<span class="k">new</span> <span class="n">32</span>
+not_secret.wipe <span class="k">do</span>
+  not_secret.readonly <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
+    <span class="c"># May only read slice</span>
+  <span class="k">end</span>
+  not_secret.readwrite <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
+    <span class="c"># May read or write to slice</span>
+  <span class="k">end</span>
+<span class="k">end</span> <span class="c"># Secret is erased</span></code></pre>
+
+<h2><a id="what-is-a-secret" class="anchor" href="#what-is-a-secret">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>What is a Secret?</h2>
+
+<p>&lt;strike>Secrets are Keys&lt;/strike>
+That's complicated and specific to the application.  Some examples:</p>
+
+<ul><li>Passwords</li><li>A crypto key is always a Secret.  Except when used for verification (sometimes)</li><li>A decrypted password vault (but it's not a Key)</li></ul>
+
+<p>Not secrets:</p>
+
+<ul><li>Digest output.  Except when used for key derivation, then it's a Secret, including the Digest state</li><li>IO::Memory or writing a file.  Except when the file is a password vault, cryptocurrency wallet, encrypted mail/messages, goat porn, maybe normal porn, sometimes scat porn, occassionally furry, not vanilla porn</li></ul>
+
+<h2><a id="why" class="anchor" href="#why">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Why?</h2>
+
+<p>The Secret interface is designed to handle varied levels of confidentiality with a unified API for cryptography libraries.</p>
+
+<p>There is no one size fits all solution.  Different applications have different security requirements.  Sometimes for the same algorithm.</p>
+
+<p>A master key (kgk) may reside on a HSM and generate subkeys on demand.
+Or for most applications the master key may use best effort protection using a combination of [guard pages, mlock, mprotect].
+Other keys in the same application may handle a high volume of messages where [guard pages, mlock, mprotect] overhead is too high.
+A key verifying a public key signature may not be Secret.</p>
 
 <h2><a id="implementing-a-new-secret-holding-class" class="anchor" href="#implementing-a-new-secret-holding-class">
   <svg class="octicon-link" aria-hidden="true">
@@ -130,7 +149,7 @@ not_secret <span class="o">=</span> <span class="t">Crypto</span><span class="t"
   </svg>
 </a>Implementing a new Secret holding class</h2>
 
-<p><strong>Intended for use by crypto library authors</strong></p>
+<p><strong>Only intended for use by crypto library authors</strong></p>
 
 <pre><code class="language-crystal"><span class="k">class</span> <span class="t">MySecret</span>
   <span class="k">include</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span>
@@ -140,12 +159,18 @@ not_secret <span class="o">=</span> <span class="t">Crypto</span><span class="t"
     <span class="c"># optionally mlock</span>
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="m">to_slice</span> : <span class="t">Bytes</span>
-    <span class="c"># Return a slice</span>
-    <span class="c"># Slice.new pointer, size</span>
+  <span class="k">def</span> <span class="m">to_slice</span>(<span class="o">&amp;</span> : <span class="t">Bytes</span> -> <span class="t">Nil</span>)
+    <span class="c"># yield Slice.new(pointer, size)</span>
+  <span class="k">ensure</span>
+    <span class="c"># optionally reencrypt or signal HSM</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">bytesize</span> : <span class="t">Int32</span>
+    <span class="c"># return the size</span>
   <span class="k">end</span>
 
   <span class="c"># optionally override [noaccess, readonly, readwrite]</span>
+  <span class="c"># optionally override (almost) any other method with implementation specific version</span>
 <span class="k">end</span>
 </code></pre>
 
@@ -154,6 +179,8 @@ not_secret <span class="o">=</span> <span class="t">Crypto</span><span class="t"
     <use href="#octicon-link"/>
   </svg>
 </a>Contributing</h2>
+
+<p><strong>Open a discussion before creating PR's</strong></p>
 
 <ol><li>Fork it (&lt;https://github.com/your-github-user/crypto-secret/fork>)</li><li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li><li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li><li>Push to the branch (<code>git push origin my-new-feature</code>)</li><li>Create a new Pull Request</li></ol>
 
