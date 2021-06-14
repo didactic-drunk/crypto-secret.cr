@@ -103,15 +103,17 @@
 
 <pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;crypto-secret/not&quot;</span>
 
-not_secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Not</span>.<span class="k">new</span> <span class="n">32</span>
-not_secret.wipe <span class="k">do</span>
-  not_secret.readonly <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
+<span class="c"># `Not` isn&#39;t actually a secret and does none of what the comments say</span>
+<span class="c"># Replace `Not` with a secure implementation like [Sodium::SecureBuffer](https://didactic-drunk.github.io/sodium.cr/master/Sodium/SecureBuffer.html)</span>
+secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Not</span>.<span class="k">new</span> <span class="n">32</span>
+secret.wipe <span class="k">do</span>
+  secret.readonly <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
     <span class="c"># May only read slice</span>
   <span class="k">end</span>
-  not_secret.readwrite <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
+  secret.readwrite <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
     <span class="c"># May read or write to slice</span>
   <span class="k">end</span>
-<span class="k">end</span> <span class="c"># Secret is erased</span></code></pre>
+<span class="k">end</span> <span class="c"># secret is erased</span></code></pre>
 
 <h2><a id="what-is-a-secret" class="anchor" href="#what-is-a-secret">
   <svg class="octicon-link" aria-hidden="true">
@@ -143,6 +145,80 @@ Or for most applications the master key may use best effort protection using a c
 Other keys in the same application may handle a high volume of messages where [guard pages, mlock, mprotect] overhead is too high.
 A key verifying a public key signature may not be Secret.</p>
 
+<h2><a id="how-do-i-use-a-secret-returned-by-a-shard" class="anchor" href="#how-do-i-use-a-secret-returned-by-a-shard">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>How do I use a Secret returned by a shard?</h2>
+
+<p>That depends on what you use it for.</p>
+
+<h4><a id="using-a-secret-key" class="anchor" href="#using-a-secret-key">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Using a Secret key</h4>
+
+<p><span class="flag orange">TODO</span> </p>
+
+<h4><a id="using-a-secret-to-hold-decrypted-file-contents" class="anchor" href="#using-a-secret-to-hold-decrypted-file-contents">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Using a Secret to hold decrypted file contents:</h4>
+
+<pre><code class="language-crystal">key <span class="o">=</span> ...another <span class="t">Secret</span>...
+encrypted_str <span class="o">=</span> <span class="t">File</span>.read(<span class="s">&quot;filename&quot;</span>)
+decrypted_size <span class="o">=</span> encrypted_str.bytesize <span class="o">-</span> mac_size
+file_secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Default</span>.<span class="k">new</span> decrypted_size
+file_secret.wipe <span class="k">do</span>
+  file_secrets.readwrite <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
+    decrypt(key: key, src: encrypted_str, dst: slice)
+
+    <span class="c"># Do something with file contents in slice</span>
+  <span class="k">end</span>
+<span class="k">end</span> <span class="c"># Decrypted data is erased</span></code></pre>
+
+<h2><a id="when-should-i-use-a-secret" class="anchor" href="#when-should-i-use-a-secret">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>When should I use a Secret?</h2>
+
+<p>When implementing an encryption class, return <code>Secret</code> keys with a sane default implementation that suits the average use for your class.  Several default implementations will be provided.
+Allowing overriding the default returned key and/or allow users of your class to provide their own <code>Secret</code> for cases where they need more or less protection.</p>
+
+<p>Example:</p>
+
+<pre><code class="language-crystal"><span class="k">class</span> <span class="t">SimplifiedEncryption</span>
+  <span class="c"># Allow users of your library to provide their own Secret key.  Also provide a sane default.</span>
+  <span class="k">def</span> <span class="m">encrypt</span>(data : <span class="t">Bytes</span> <span class="o">|</span> <span class="t">String</span>, key : <span class="t">Secret</span>? <span class="o">=</span> <span class="n">nil</span>) : {<span class="t">Secret</span>, <span class="t">Bytes</span>}
+    key ||= <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Default</span>.random
+    ...
+    {key, encrypted_slice}
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<h2><a id="what-attacks-does-a-secret-protect-against" class="anchor" href="#what-attacks-does-a-secret-protect-against">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>What attacks does a Secret protect against?</h2>
+
+<p><span class="flag orange">TODO</span>  describe implementations</p>
+
+<h2><a id="other-languageslibraries" class="anchor" href="#other-languageslibraries">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Other languages/libraries</h2>
+
+<p>rust: <a href="https://github.com/stouset/secrets/">secrets</a>
+c: <a href="https://github.com/jedisct1/libsodium-doc/blob/master/helpers/memory_management.md#guarded_heap_allocations">libsodium</a>
+go: <a href="https://github.com/awnumar/memguard">memguard</a>
+haskell: <a href="https://hackage.haskell.org/package/securemem">securemem</a>
+c#: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.security.securestring">SecureString</a></p>
+
 <h2><a id="implementing-a-new-secret-holding-class" class="anchor" href="#implementing-a-new-secret-holding-class">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -160,6 +236,7 @@ A key verifying a public key signature may not be Secret.</p>
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="m">to_slice</span>(<span class="o">&amp;</span> : <span class="t">Bytes</span> -> <span class="t">Nil</span>)
+    <span class="c"># The yielded Slice only needs to be valid within the block</span>
     <span class="c"># yield Slice.new(pointer, size)</span>
   <span class="k">ensure</span>
     <span class="c"># optionally reencrypt or signal HSM</span>
@@ -170,7 +247,7 @@ A key verifying a public key signature may not be Secret.</p>
   <span class="k">end</span>
 
   <span class="c"># optionally override [noaccess, readonly, readwrite]</span>
-  <span class="c"># optionally override (almost) any other method with implementation specific version</span>
+  <span class="c"># optionally override (almost) any other method with an implementation specific version</span>
 <span class="k">end</span>
 </code></pre>
 
