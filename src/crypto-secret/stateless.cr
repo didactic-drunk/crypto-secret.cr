@@ -6,6 +6,10 @@ require "./secret"
 module Crypto::Secret::Stateless
   include Crypto::Secret
 
+  macro included
+    extend ClassMethods
+  end
+
   # Not thread safe
   def readwrite
   end

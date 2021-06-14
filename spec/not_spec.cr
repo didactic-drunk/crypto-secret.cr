@@ -27,4 +27,10 @@ describe Crypto::Secret::Not do
     secret.to_s.should_not match /Bytes|Slice/
     secret.inspect.should_not match /Bytes|Slice/
   end
+
+  it "returns a random secret" do
+    secret1 = Crypto::Secret::Not.new 8
+    secret2 = Crypto::Secret::Not.random 8
+    secret1.should_not eq secret2
+  end
 end

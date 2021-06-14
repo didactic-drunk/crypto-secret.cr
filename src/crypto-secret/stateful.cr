@@ -12,6 +12,10 @@ module Crypto::Secret
   module Stateful
     include Crypto::Secret
 
+    macro included
+      extend ClassMethods
+    end
+
     @state = State::Readwrite
 
     # Temporarily make buffer readwrite within the block returning to the prior state on exit.

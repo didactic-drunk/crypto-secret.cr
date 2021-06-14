@@ -1,4 +1,5 @@
 require "./lib"
+require "./class_methods"
 
 # Interface to hold sensitive information (often cryptographic keys)
 #
