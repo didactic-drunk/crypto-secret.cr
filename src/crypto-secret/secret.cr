@@ -1,5 +1,16 @@
 require "crypto/subtle"
 
+lib LibC
+  fun explicit_bzero(Void*, LibC::SizeT) : Int
+end
+
+struct Slice(T)
+  def wipe
+    r = LibC.explicit_bzero slice.to_unsafe, slice.bytesize
+    raise RunTimeError.from_errno("explicit_bzero") if r != 0
+  end
+end
+
 # Interface to hold sensitive information (often cryptographic keys)
 #
 # **Only for direct use by cryptographic library authors**
@@ -54,7 +65,9 @@ module Crypto::Secret
   end
 
   def wipe
-    # Todo: implement wiping.  Needs crystal support
+    readwrite do |slice|
+      slice.wipe
+    end
   end
 
   # Secret is wiped after exiting the block
