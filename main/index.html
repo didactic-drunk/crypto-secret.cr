@@ -76,7 +76,7 @@
 
 <p>Secrets hold sensitive information</p>
 
-<p>The Secret interface manages limited time access to the secret and securely erasing the secret when no longer needed.</p>
+<p>The Secret interface manages limited time access to a secret and securely erases the secret when no longer needed.</p>
 
 <p>Secret providers may implement additional protections via:</p>
 
@@ -133,7 +133,7 @@ That's complicated and specific to the application.  Some examples:</p>
 
 <p>Not secrets:</p>
 
-<ul><li>Digest output.  Except when used for key derivation, then it's a Secret, including the Digest state</li><li>IO::Memory or writing a file.  Except when the file is a password vault, cryptocurrency wallet, encrypted mail/messages, goat porn, maybe normal porn, sometimes scat porn, occassionally furry, not vanilla porn</li></ul>
+<ul><li>Digest output.  Except when used for key derivation, then it's a Secret, including the Digest state</li><li>IO::Memory or writing a file.  Except when the file is a password vault, cryptocurrency wallet, encrypted mail/messages, goat porn, maybe "normal" porn, sometimes scat porn, occassionally furry, not vanilla porn</li></ul>
 
 <h2><a id="why" class="anchor" href="#why">
   <svg class="octicon-link" aria-hidden="true">
@@ -146,9 +146,9 @@ That's complicated and specific to the application.  Some examples:</p>
 <p>There is no one size fits all solution.  Different applications have different security requirements.  Sometimes for the same algorithm.</p>
 
 <p>A master key (kgk) may reside on a HSM and generate subkeys on demand.
-Or for most applications the master key may use best effort protection using a combination of [guard pages, mlock, mprotect].
+Or for most applications the master key may use a best effort approach using a combination of [guard pages, mlock, mprotect].
 Other keys in the same application may handle a high volume of messages where [guard pages, mlock, mprotect] overhead is too high.
-A key verifying a public key signature may not be Secret.</p>
+A key verifying a public key signature may not be Secret (but is a Secret::Not).</p>
 
 <h2><a id="how-do-i-use-a-secret-returned-by-a-shard" class="anchor" href="#how-do-i-use-a-secret-returned-by-a-shard">
   <svg class="octicon-link" aria-hidden="true">
@@ -190,8 +190,8 @@ file_secret.wipe <span class="k">do</span>
   </svg>
 </a>When should I use a Secret?</h2>
 
-<p>When implementing an encryption class, return <code>Secret</code> keys with a sane default implementation that suits the average use for your class.  Several default implementations will be provided.
-Allowing overriding the default returned key and/or allow users of your class to provide their own <code>Secret</code> for cases where they need more or less protection.</p>
+<p>When implementing an encryption class return <code>Secret</code> keys with a sane default implementation that suits the average use for your class.  Several default implementations will be provided.
+Allow overriding the default returned key and/or allow users of your class to provide their own <code>Secret</code> for cases where they need more or less protection.</p>
 
 <p>Example:</p>
 
@@ -218,11 +218,7 @@ Allowing overriding the default returned key and/or allow users of your class to
   </svg>
 </a>Other languages/libraries</h2>
 
-<p>rust: <a href="https://github.com/stouset/secrets/">secrets</a>
-c: <a href="https://github.com/jedisct1/libsodium-doc/blob/master/helpers/memory_management.md#guarded_heap_allocations">libsodium</a>
-go: <a href="https://github.com/awnumar/memguard">memguard</a>
-haskell: <a href="https://hackage.haskell.org/package/securemem">securemem</a>
-c#: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.security.securestring">SecureString</a></p>
+<ul><li>rust: <a href="https://github.com/stouset/secrets/">secrets</a></li><li>c: <a href="https://github.com/jedisct1/libsodium-doc/blob/master/helpers/memory_management.md#guarded_heap_allocations">libsodium</a></li><li>go: <a href="https://github.com/awnumar/memguard">memguard</a></li><li>haskell: <a href="https://hackage.haskell.org/package/securemem">securemem</a></li><li>c#: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.security.securestring">SecureString</a></li></ul>
 
 <h2><a id="implementing-a-new-secret-holding-class" class="anchor" href="#implementing-a-new-secret-holding-class">
   <svg class="octicon-link" aria-hidden="true">
@@ -262,7 +258,7 @@ c#: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.security.secures
   </svg>
 </a>Contributing</h2>
 
-<p><strong>Open a discussion before creating PR's</strong></p>
+<p><strong>Open a discussion or issue before creating PR's</strong></p>
 
 <ol><li>Fork it (&lt;https://github.com/your-github-user/crypto-secret/fork>)</li><li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li><li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li><li>Push to the branch (<code>git push origin my-new-feature</code>)</li><li>Create a new Pull Request</li></ol>
 
