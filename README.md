@@ -32,6 +32,11 @@ Secret providers may implement additional protections via:
 
 ## Usage
 
+#### Rules:
+1. Secrets are only available within a readonly or readwrite block
+2. Secrets are not thread safe except for the provided `Bytes` (only when reading) within a single readonly or readwrite block 
+
+
 ```crystal
 require "crypto-secret/not"
 
@@ -47,6 +52,16 @@ secret.wipe do
   end
 end # secret is erased
 ```
+
+#### Breaking the rules:
+
+If you need thread safety :
+1. Switch to a Stateless Secret
+2. Or switch the Secret's state to readonly or readwrite after construction and never switch it again.  [sodium.cr]() makes use of this technique to provide thread safe encryption/decryption
+3. Or wrap all access in a Mutex
+
+If you need more better performance:
+* Consider 1. or 2.
 
 ## What is a Secret?
 
