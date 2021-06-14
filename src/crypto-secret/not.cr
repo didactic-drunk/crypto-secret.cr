@@ -6,14 +6,12 @@
 struct Crypto::Secret::Not
   include Crypto::Secret
 
-  def initialize(size)
-    @bytes = Bytes.new size
+  def self.new(size)
+    new Bytes.new(size)
   end
 
-  def to_slice : Bytes
-    @bytes
+  def initialize(@bytes : Bytes)
   end
-
 
   delegate_to_slice @bytes
   delegate_to_bytesize @bytes
