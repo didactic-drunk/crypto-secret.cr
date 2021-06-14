@@ -5,16 +5,22 @@ require "./stateless"
 # Not locked in memory
 # Not access protected
 # No guard pages
-struct Crypto::Secret::Not
-  include Crypto::Secret::Stateless
+# Doesn't wipe
+module Crypto::Secret
+  struct Not
+    include Stateless
 
-  def self.new(size)
-    new Bytes.new(size)
+    def self.new(size)
+      new Bytes.new(size)
+    end
+
+    def initialize(@bytes : Bytes)
+    end
+
+    delegate_to_slice @bytes
+    delegate_to_bytesize @bytes.bytesize
+
+    def wipe
+    end
   end
-
-  def initialize(@bytes : Bytes)
-  end
-
-  delegate_to_slice @bytes
-  delegate_to_bytesize @bytes
 end

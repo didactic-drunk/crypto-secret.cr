@@ -90,7 +90,7 @@ module Crypto::Secret
 
   macro delegate_to_bytesize(to object)
     def bytesize : Int32
-      {{object.id}}.bytesize
+      {{object.id}}
     end
   end
 

@@ -20,6 +20,11 @@ describe Crypto::Secret::Not do
     end
   end
 
+  it "bytesize" do
+    secret = Crypto::Secret::Not.new 5
+    secret.bytesize.should eq 5
+  end
+
   it "doesn't leak key material" do
     secret = Crypto::Secret::Not.new 5
     secret.to_s.should match /\(\*\*\*SECRET\*\*\*\)$/
