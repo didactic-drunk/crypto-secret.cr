@@ -1,10 +1,12 @@
+require "./stateless"
+
 # A not very secret secret
 #
 # Not locked in memory
 # Not access protected
 # No guard pages
 struct Crypto::Secret::Not
-  include Crypto::Secret
+  include Crypto::Secret::Stateless
 
   def self.new(size)
     new Bytes.new(size)

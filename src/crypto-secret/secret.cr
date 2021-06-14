@@ -1,13 +1,12 @@
 require "crypto/subtle"
 
 lib LibC
-  fun explicit_bzero(Void*, LibC::SizeT) : Int
+  fun explicit_bzero(Void*, LibC::SizeT) : Void
 end
 
 struct Slice(T)
   def wipe
-    r = LibC.explicit_bzero slice.to_unsafe, slice.bytesize
-    raise RunTimeError.from_errno("explicit_bzero") if r != 0
+    LibC.explicit_bzero to_unsafe, bytesize
   end
 end
 
@@ -21,41 +20,21 @@ module Crypto::Secret
   class Error < Exception
     class KeyWiped < Error
     end
-  end
 
-  def readwrite
-  end
+    class InvalidStateTransition < Error
+    end
 
-  # Yields a Slice that is readable and writable
-  #
-  # `slice` is only available within the block
-  #
-  # Not thread safe
-  def readwrite
-    to_slice do |slice|
-      yield slice
+    # Check RLIMIT_MEMLOCK if you receive this
+    class OutOfMemory < Error
     end
   end
 
-  def readonly
-  end
-
-  # Yields a Slice that is readable possibly writable depending on the prior protection level and underlying implementation
-  # Don't write to it
-  #
-  # Not thread safe
-  def readonly
-    to_slice do |slice|
-      yield slice
-    end
-  end
-
-  def noaccess
-  end
-
-  # Not thread safe
-  def noaccess
-    yield
+  enum State
+    Cloning
+    Wiped
+    Noaccess
+    Readonly
+    Readwrite
   end
 
   # For debugging.
@@ -66,7 +45,7 @@ module Crypto::Secret
 
   def wipe
     readwrite do |slice|
-      slice.wipe
+      wipe_impl slice
     end
   end
 
@@ -105,6 +84,10 @@ module Crypto::Secret
     io << self.class.to_s << "(***SECRET***)"
   end
 
+  abstract def readwrite
+  abstract def readonly
+  abstract def noaccess
+
   abstract def to_slice(& : Bytes -> Nil)
   abstract def bytesize : Int32
 
@@ -118,5 +101,9 @@ module Crypto::Secret
     def bytesize : Int32
       {{object.id}}.bytesize
     end
+  end
+
+  def wipe_impl(slice : Bytes) : Nil
+    slice.wipe
   end
 end
