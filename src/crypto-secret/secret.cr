@@ -100,6 +100,11 @@ module Crypto::Secret
     end
   end
 
+  # Hide internal state to prevent leaking in to logs
+  def inspect(io : IO) : Nil
+    io << self.class.to_s << "(***SECRET***)"
+  end
+
   abstract def to_slice(& : Bytes -> Nil)
   abstract def bytesize : Int32
 

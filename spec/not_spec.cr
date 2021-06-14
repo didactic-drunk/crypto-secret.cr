@@ -19,4 +19,12 @@ describe Crypto::Secret::Not do
       end
     end
   end
+
+  it "doesn't leak key material" do
+    secret = Crypto::Secret::Not.new 5
+    secret.to_s.should match /\(\*\*\*SECRET\*\*\*\)$/
+    secret.inspect.should match /\(\*\*\*SECRET\*\*\*\)$/
+    secret.to_s.should_not match /Bytes|Slice/
+    secret.inspect.should_not match /Bytes|Slice/
+  end
 end

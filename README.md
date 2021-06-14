@@ -9,7 +9,7 @@ Secrets hold sensitive information
 The Secret interface manages limited time access to a secret and securely erases the secret when no longer needed.
 
 Secret providers may implement additional protections via:
-* `#noaccess`, `#readonly` or `readwrite`.
+* `#noaccess`, `#readonly` or `#readwrite`
 * Using [mprotect]() to control access
 * Encrypting the data when not in use
 * Deriving keys on demand from a HSM
@@ -116,7 +116,12 @@ end
 
 ## What attacks does a Secret protect against?
 
+* Timing attacks when comparing secrets by overriding `==`
+* Leaking data in to logs by overriding `inspect`
+* Wiping memory when the secret is no longer in use
+
 TODO: describe implementations
+
 
 ## Other languages/libraries
 
