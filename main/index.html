@@ -106,6 +106,14 @@
   </svg>
 </a>Usage</h2>
 
+<h4><a id="rules" class="anchor" href="#rules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Rules:</h4>
+
+<ol><li>Secrets are only available within a readonly or readwrite block</li><li>Secrets are not thread safe except for the provided <code>Bytes</code> (only when reading) within a single readonly or readwrite block </li></ol>
+
 <pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;crypto-secret/not&quot;</span>
 
 <span class="c"># `Not` isn&#39;t actually a secret and does none of what the comments say</span>
@@ -119,6 +127,20 @@ secret.wipe <span class="k">do</span>
     <span class="c"># May read or write to slice</span>
   <span class="k">end</span>
 <span class="k">end</span> <span class="c"># secret is erased</span></code></pre>
+
+<h4><a id="breaking-the-rules" class="anchor" href="#breaking-the-rules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Breaking the rules:</h4>
+
+<p>If you need thread safety :</p>
+
+<ol><li>Switch to a Stateless Secret</li><li>Or switch the Secret's state to readonly or readwrite after construction and never switch it again.  <a href="">sodium.cr</a> makes use of this technique to provide thread safe encryption/decryption</li><li>Or wrap all access in a Mutex</li></ol>
+
+<p>If you need more better performance:</p>
+
+<ul><li>Consider 1. or 2.</li></ul>
 
 <h2><a id="what-is-a-secret" class="anchor" href="#what-is-a-secret">
   <svg class="octicon-link" aria-hidden="true">
