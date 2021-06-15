@@ -75,6 +75,17 @@ module Crypto::Secret
     io << self.class.to_s << "(***SECRET***)"
   end
 
+  def dup
+    readonly do |sslice|
+      obj = self.class.new sslice.bytesize
+      obj.readwrite do |dslice|
+        sslice.copy_to dslice
+      end
+      # TODO: copy state if possible
+      obj
+    end
+  end
+
   abstract def readwrite
   abstract def readonly
   abstract def noaccess

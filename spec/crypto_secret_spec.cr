@@ -1,7 +1,8 @@
 require "./spec_helper"
+require "../src/crypto-secret/test"
+require "../src/crypto-secret/not"
+require "../src/crypto-secret/bidet"
 
-describe Crypto::Secret do
-  pending "works" do
-    false.should eq(true)
-  end
-end
+test_secret_class Crypto::Secret::Not
+test_secret_class Crypto::Secret::Bidet
+
