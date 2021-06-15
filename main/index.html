@@ -112,7 +112,7 @@
   </svg>
 </a>Rules:</h4>
 
-<ol><li>Secrets are only available within a readonly or readwrite block</li><li>Secrets are not thread safe except for the provided <code>Bytes</code> (only when reading) within a single readonly or readwrite block </li></ol>
+<ol><li>Secrets should be erased (wiped) ASAP</li><li>Secrets are only available within a <code>readonly</code> or <code>readwrite</code> block</li><li>Secrets are not thread safe except for the provided <code><a href="Slice.html">Slice</a></code> (only when reading) within a single <code>readonly</code> or <code>readwrite</code> block </li></ol>
 
 <pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;crypto-secret/not&quot;</span>
 
@@ -136,11 +136,26 @@ secret.wipe <span class="k">do</span>
 
 <p>If you need thread safety :</p>
 
-<ol><li>Switch to a Stateless Secret</li><li>Or switch the Secret's state to readonly or readwrite after construction and never switch it again.  <a href="">sodium.cr</a> makes use of this technique to provide thread safe encryption/decryption</li><li>Or wrap all access in a Mutex</li></ol>
+<ol><li>Switch to a Stateless Secret</li><li>Or switch the Secret's state to readonly or readwrite after construction and never switch it again.  <a href="">sodium.cr</a> makes use of this technique to provide thread safe encryption/decryption</li><li>Or wrap all access in a Mutex (compatible with all Secret classes)</li></ol>
 
 <p>If you need more better performance:</p>
 
 <ul><li>Consider 1. or 2.</li></ul>
+
+<p>If you need compatibility with any <code>Secret</code>:</p>
+
+<ul><li>Always use a <code>Mutex</code></li><li>Never rely on 1. or 2.</li></ul>
+
+<h4><a id="converting-bytes-to-a-secret" class="anchor" href="#converting-bytes-to-a-secret">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Converting <code>Bytes</code> to a <code>Secret</code></h4>
+
+<pre><code class="language-crystal">slice <span class="o">=</span> method_that_return_bytes()
+secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span>.move_from slice <span class="c"># erases slice</span>
+<span class="c"># or</span>
+secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span>.copy_from slice</code></pre>
 
 <h2><a id="what-is-a-secret" class="anchor" href="#what-is-a-secret">
   <svg class="octicon-link" aria-hidden="true">
@@ -253,10 +268,12 @@ Allow overriding the default returned key and/or allow users of your class to pr
 <p><strong>Only intended for use by crypto library authors</strong></p>
 
 <pre><code class="language-crystal"><span class="k">class</span> <span class="t">MySecret</span>
-  <span class="k">include</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span>
+  <span class="c"># Choose one</span>
+  <span class="k">include</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Stateless</span>
+  <span class="k">include</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Stateful</span>
 
   <span class="k">def</span> <span class="m">initialize</span>(size)
-    <span class="c"># allocate storage</span>
+    <span class="c"># allocate or reference storage</span>
     <span class="c"># optionally mlock</span>
   <span class="k">end</span>
 
