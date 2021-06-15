@@ -5,4 +5,3 @@ require "../src/crypto-secret/bidet"
 
 test_secret_class Crypto::Secret::Not
 test_secret_class Crypto::Secret::Bidet
-
