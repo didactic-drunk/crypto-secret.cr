@@ -1,11 +1,12 @@
 require "./stateless"
 
-# A not very secret secret
+# A not very secret secret, but fast
 #
-# Not locked in memory
-# Not access protected
-# No guard pages
-# Doesn't wipe
+# * 0 overhead
+# * Not locked in memory
+# * Not access protected
+# * No guard pages
+# * No wiping
 module Crypto::Secret
   struct Not
     include Stateless
