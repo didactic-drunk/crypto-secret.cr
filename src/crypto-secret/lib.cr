@@ -1,3 +1,6 @@
+module Crypto
+end
+
 require "crypto/subtle"
 
 lib LibC
