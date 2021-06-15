@@ -119,11 +119,11 @@
 
 <ol><li>Secrets should be erased (wiped) ASAP</li><li>Secrets are only available within a <code>readonly</code> or <code>readwrite</code> block</li><li>Secrets are not thread safe except for the provided <code><a href="Slice.html">Slice</a></code> (only when reading) within a single <code>readonly</code> or <code>readwrite</code> block </li></ol>
 
-<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;crypto-secret/not&quot;</span>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;crypto-secret/bidet&quot;</span>
 
-<span class="c"># `Not` isn&#39;t actually a secret and does none of what the comments say</span>
-<span class="c"># Replace `Not` with a secure implementation like [Sodium::SecureBuffer](https://didactic-drunk.github.io/sodium.cr/master/Sodium/SecureBuffer.html)</span>
-secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Not</span>.<span class="k">new</span> <span class="n">32</span>
+<span class="c"># Bidet is a minimal but fast secret implementation</span>
+secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span>.<span class="k">new</span> <span class="n">32</span>
+<span class="c"># Don&#39;t forget to wipe!</span>
 secret.wipe <span class="k">do</span>
   secret.readonly <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
     <span class="c"># May only read slice</span>
