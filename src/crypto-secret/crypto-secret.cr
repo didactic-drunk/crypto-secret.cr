@@ -1,2 +1,2 @@
-require "./secret"
-require "./*"
+require "./not"
+require "./bidet"

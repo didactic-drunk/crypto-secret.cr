@@ -39,11 +39,11 @@ Secret providers may implement additional protections via:
 
 
 ```crystal
-require "crypto-secret/not"
+require "crypto-secret/bidet"
 
-# `Not` isn't actually a secret and does none of what the comments say
-# Replace `Not` with a secure implementation like [Sodium::SecureBuffer](https://didactic-drunk.github.io/sodium.cr/master/Sodium/SecureBuffer.html)
-secret = Crypto::Secret::Not.new 32
+# Bidet is a minimal but fast secret implementation
+secret = Crypto::Secret::Bidet.new 32
+# Don't forget to wipe!
 secret.wipe do
   secret.readonly do |slice|
     # May only read slice
