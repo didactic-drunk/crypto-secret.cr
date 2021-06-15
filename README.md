@@ -33,8 +33,9 @@ Secret providers may implement additional protections via:
 ## Usage
 
 #### Rules:
-1. Secrets are only available within a readonly or readwrite block
-2. Secrets are not thread safe except for the provided `Bytes` (only when reading) within a single readonly or readwrite block 
+1. Secrets should be erased (wiped) ASAP
+2. Secrets are only available within a `readonly` or `readwrite` block
+3. Secrets are not thread safe except for the provided `Slice` (only when reading) within a single `readonly` or `readwrite` block 
 
 
 ```crystal
@@ -58,10 +59,22 @@ end # secret is erased
 If you need thread safety :
 1. Switch to a Stateless Secret
 2. Or switch the Secret's state to readonly or readwrite after construction and never switch it again.  [sodium.cr]() makes use of this technique to provide thread safe encryption/decryption
-3. Or wrap all access in a Mutex
+3. Or wrap all access in a Mutex (compatible with all Secret classes)
 
 If you need more better performance:
 * Consider 1. or 2.
+
+If you need compatibility with any `Secret`:
+* Always use a `Mutex`
+* Never rely on 1. or 2.
+
+#### Converting `Bytes` to a `Secret`
+```crystal
+slice = method_that_return_bytes()
+secret = Crypto::Secret::Bidet.move_from slice # erases slice
+# or
+secret = Crypto::Secret::Bidet.copy_from slice
+```
 
 ## What is a Secret?
 
@@ -152,10 +165,12 @@ TODO: describe implementations
 
 ```
 class MySecret
-  include Crypto::Secret
+  # Choose one
+  include Crypto::Secret::Stateless
+  include Crypto::Secret::Stateful
 
   def initialize(size)
-    # allocate storage
+    # allocate or reference storage
     # optionally mlock
   end
 

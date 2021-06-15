@@ -11,11 +11,13 @@ module Crypto::Secret
   struct Not
     include Stateless
 
-    def self.new(size)
-      new Bytes.new(size)
+    def self.new(size : Int32)
+      bytes = Bytes.new size
+      new(references: bytes)
     end
 
-    def initialize(@bytes : Bytes)
+    def initialize(*, references : Bytes)
+      @bytes = references
     end
 
     delegate_to_slice @bytes
