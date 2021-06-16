@@ -1,11 +1,11 @@
 require "./stateless"
 
-# Leaves less sh** around if you forget to wipe.  A safer default for large secrets that may stress mlock limits or low confidentiality secrets.
-#
-# * Not locked in memory
-# * Not access protected
-# * No guard pages
 module Crypto::Secret
+  # Leaves less sh** around if you forget to wipe.  A safer default for large secrets that may stress mlock limits or low confidentiality secrets.
+  #
+  # * Not locked in memory
+  # * Not access protected
+  # * No guard pages
   class Bidet
     include Stateless
 

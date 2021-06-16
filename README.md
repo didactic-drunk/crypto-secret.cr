@@ -88,7 +88,7 @@ That's complicated and specific to the application.  Some examples:
 Not secrets:
 
 * Digest output.  Except when used for key derivation, then it's a Secret, including the Digest state
-* IO::Memory or writing a file.  Except when the file is a password vault, cryptocurrency wallet, encrypted mail/messages, goat porn, maybe "normal" porn, sometimes scat porn, occassionally furry, not vanilla porn
+* IO::Memory or writing a file.  Except when the file is a password vault, cryptocurrency wallet, encrypted mail/messages, goat porn, maybe "normal" porn, sometimes scat porn, occassionally furry, not people porn
 
 ## Why?
 
