@@ -357,7 +357,7 @@ Allow overriding the default returned key and/or allow users of your class to pr
     <span class="c"># optionally mlock</span>
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="m">to_slice</span>(<span class="o">&amp;</span> : <span class="t">Bytes</span> -> <span class="t">Nil</span>)
+  <span class="k">protected</span> <span class="k">def</span> <span class="m">to_slice</span>(<span class="o">&amp;</span> : <span class="t">Bytes</span> -> <span class="t">Nil</span>)
     <span class="c"># The yielded Slice only needs to be valid within the block</span>
     <span class="c"># yield Slice.new(pointer, size)</span>
   <span class="k">ensure</span>
