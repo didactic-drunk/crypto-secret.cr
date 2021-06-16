@@ -105,6 +105,12 @@ module Crypto::Secret
       @state = State::Wiped
     end
 
+    def dup
+      super.tap do |obj|
+        obj.set_state @state
+      end
+    end
+
     protected abstract def readwrite_impl : Nil
     protected abstract def readonly_impl : Nil
     protected abstract def noaccess_impl : Nil
