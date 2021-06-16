@@ -30,7 +30,7 @@ module Crypto::Secret
 
     # Marks a region allocated as readable and writable
     # WARNING: Not thread safe
-    def readwrite
+    def readwrite : self
       raise Error::KeyWiped.new if @state == State::Wiped
       readwrite_impl
       @state = State::Readwrite
@@ -49,7 +49,7 @@ module Crypto::Secret
 
     # Marks a region allocated using sodium_malloc() or sodium_allocarray() as read-only.
     # WARNING: Not thread safe
-    def readonly
+    def readonly : self
       raise Error::KeyWiped.new if @state == State::Wiped
       readonly_impl
       @state = State::Readonly
@@ -58,7 +58,7 @@ module Crypto::Secret
 
     # Makes a region inaccessible. It cannot be read or written, but the data are preserved.
     # WARNING: Not thread safe
-    def noaccess
+    def noaccess : self
       raise Error::KeyWiped.new if @state == State::Wiped
       noaccess_impl
       @state = State::Noaccess

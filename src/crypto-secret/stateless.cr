@@ -11,7 +11,8 @@ module Crypto::Secret::Stateless
   end
 
   # Not thread safe
-  def readwrite
+  def readwrite : self
+    self
   end
 
   # Yields a Slice that is readable and writable
@@ -26,7 +27,8 @@ module Crypto::Secret::Stateless
   end
 
   # Not thread safe
-  def readonly
+  def readonly : self
+    self
   end
 
   # Yields a Slice that is readable possibly writable depending on the prior protection level and underlying implementation
@@ -40,7 +42,8 @@ module Crypto::Secret::Stateless
   end
 
   # Not thread safe
-  def noaccess
+  def noaccess : self
+    self
   end
 
   # Not thread safe
