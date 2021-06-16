@@ -13,7 +13,7 @@
 <script type="text/javascript" src="js/doc.js"></script>
 
   <meta name="repository-name" content="crypto-secret">
-  <title>Slice(T) - crypto-secret main</title>
+  <title>Crypto - crypto-secret main</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "";
   </script>
@@ -56,7 +56,7 @@
       
     </li>
   
-  <li class="parent " data-id="crypto-secret/Crypto" data-name="crypto">
+  <li class="parent open current" data-id="crypto-secret/Crypto" data-name="crypto">
       <a href="Crypto.html">Crypto</a>
       
         <ul>
@@ -131,7 +131,7 @@
       
     </li>
   
-  <li class=" current" data-id="crypto-secret/Slice" data-name="slice(t)">
+  <li class=" " data-id="crypto-secret/Slice" data-name="slice(t)">
       <a href="Slice.html">Slice</a>
       
     </li>
@@ -145,54 +145,17 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">struct</span> Slice(T)
+  <span class="kind">module</span> Crypto
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="Slice.html">Slice(T)</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
-
-
-
-
-  <h2>
-    <a id="overview" class="anchor" href="#overview">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Overview
-  </h2>
-
-  <p>A <code><a href="Slice.html">Slice</a></code> is a <code>Pointer</code> with an associated size.</p>
-
-<p>While a pointer is unsafe because no bound checks are performed when reading from and writing to it,
-reading from and writing to a slice involve bound checks.
-In this way, a slice is a safe alternative to <code>Pointer</code>.</p>
-
-<p>A Slice can be created as read-only: trying to write to it
-will raise. For example the slice of bytes returned by
-<code>String#to_slice</code> is read-only.</p>
 
 
 
 
 
-  <h2>
-    <a id="included-modules" class="anchor" href="#included-modules">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Included Modules
-  </h2>
-  <ul class="other-types-list">
-    
-      <li class="other-type">Comparable(<a href="Slice.html">Slice(T)</a>)</li>
-    
-      <li class="other-type">Indexable(T)</li>
-    
-  </ul>
+
 
 
 
@@ -213,7 +176,7 @@ will raise. For example the slice of bytes returned by
   </h2>
   
     
-      <a href="https://github.com/didactic-drunk/crypto-secret.cr/blob/eb8ca96286fa803b9a04a75f88b142261e708f3a/src/crypto-secret/lib.cr#L10" target="_blank">
+      <a href="https://github.com/didactic-drunk/crypto-secret.cr/blob/eb8ca96286fa803b9a04a75f88b142261e708f3a/src/crypto-secret/lib.cr#L1" target="_blank">
         crypto-secret/lib.cr
       </a>
     
@@ -228,98 +191,11 @@ will raise. For example the slice of bytes returned by
 
 
 
-  <h2>
-    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#wipe-instance-method" class="signature"><strong>#wipe</strong></a>
-        
-      </li>
-    
-  </ul>
-
 
 
 
 
 <div class="methods-inherited">
-  
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
   
 </div>
 
@@ -327,32 +203,6 @@ will raise. For example the slice of bytes returned by
 
 
 
-
-  <h2>
-    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Detail
-  </h2>
-  
-    <div class="entry-detail" id="wipe-instance-method">
-      <div class="signature">
-        
-        def <strong>wipe</strong>
-
-        <a class="method-permalink" href="#wipe-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/didactic-drunk/crypto-secret.cr/blob/eb8ca96286fa803b9a04a75f88b142261e708f3a/src/crypto-secret/lib.cr#L11" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
 
 
 
