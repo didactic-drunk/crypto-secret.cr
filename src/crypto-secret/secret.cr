@@ -90,7 +90,7 @@ module Crypto::Secret
   abstract def readonly
   abstract def noaccess
 
-  abstract def to_slice(& : Bytes -> Nil)
+  protected abstract def to_slice(& : Bytes -> Nil)
   abstract def bytesize : Int32
 
   macro delegate_to_slice(to object)

@@ -6,6 +6,7 @@ module Crypto::Secret
   # * Not locked in memory
   # * Not access protected
   # * No guard pages
+  # * Hours of fun
   class Bidet
     include Stateless
 

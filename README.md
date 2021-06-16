@@ -174,7 +174,7 @@ class MySecret
     # optionally mlock
   end
 
-  def to_slice(& : Bytes -> Nil)
+  protected def to_slice(& : Bytes -> Nil)
     # The yielded Slice only needs to be valid within the block
     # yield Slice.new(pointer, size)
   ensure
