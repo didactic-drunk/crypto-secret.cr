@@ -101,6 +101,16 @@
       
     </li>
   
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Key" data-name="crypto::secret::key">
+      <a href="Crypto/Secret/Key.html">Key</a>
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Large" data-name="crypto::secret::large">
+      <a href="Crypto/Secret/Large.html">Large</a>
+      
+    </li>
+  
   <li class=" " data-id="crypto-secret/Crypto/Secret/Not" data-name="crypto::secret::not">
       <a href="Crypto/Secret/Not.html">Not</a>
       
@@ -157,6 +167,9 @@
 <p>Secrets hold sensitive information</p>
 
 <p>The Secret interface manages limited time access to a secret and securely erases the secret when no longer needed.</p>
+
+<p>Multiple <code>Secret</code> classes exist.  Most of the time you shouldn't need to change the <code>Secret</code> type - the cryptographic library should have sane defaults.
+If you have a high security or high performance application see <a href="">which secret type should I choose?</a></p>
 
 <p>Secret providers may implement additional protections via:</p>
 
