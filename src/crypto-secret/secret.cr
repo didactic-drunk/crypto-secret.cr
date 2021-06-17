@@ -106,7 +106,6 @@ module Crypto::Secret
     end
   end
 
-
   # Marks a region allocated using as read & write depending on implementation.
   abstract def readwrite : self
   # Marks a region allocated using as read-only depending on implementation.
