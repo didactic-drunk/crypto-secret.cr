@@ -56,9 +56,11 @@ macro test_secret_class(to sclass)
       secret1 = sclass.copy_from key
       secret2 = secret1.dup
       (secret1 == secret2).should be_true
-    end
 
-    pending "check dup state" { }
+      if secret1.is_a?(Crypto::Secret::Stateful) && secret2.is_a?(Crypto::Secret::Stateful)
+        secret1.@state.should eq secret2.@state
+      end
+    end
 
     it "bytesize" do
       secret = sclass.new 5

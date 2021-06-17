@@ -1,4 +1,11 @@
 module Crypto
+  module Secret
+    module Stateless
+    end
+
+    module Stateful
+    end
+  end
 end
 
 require "crypto/subtle"

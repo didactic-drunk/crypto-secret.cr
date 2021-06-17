@@ -66,7 +66,9 @@ module Crypto::Secret
     end
 
     # WARNING: Not thread safe
-    private def set_state(new_state : State)
+    # Kept public for .dup
+    # :nodoc:
+    def set_state(new_state : State)
       return if @state == new_state
 
       case new_state
