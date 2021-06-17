@@ -76,5 +76,24 @@ macro test_secret_class(to sclass)
 
       secret.inspect.should match /\(\*\*\*SECRET\*\*\*\)$/
     end
+
+    if sclass.is_a?(Crypto::Secret::Stateful)
+      it "can't transition after #wipe except with #reset" do
+        secret = sclass.new 1
+        secret.wipe
+        expect_raises Crypto::Secret::Error::KeyWiped do
+          secret.readwrite
+        end
+        expect_raises Crypto::Secret::Error::KeyWiped do
+          secret.readonly
+        end
+        expect_raises Crypto::Secret::Error::KeyWiped do
+          secret.readnoaccess
+        end
+
+        secret.reset
+        secret.readonly
+      end
+    end
   end
 end

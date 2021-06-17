@@ -15,7 +15,7 @@ lib LibC
 end
 
 struct Slice(T)
-  def wipe
+  def wipe : Nil
     LibC.explicit_bzero to_unsafe, bytesize
   end
 end

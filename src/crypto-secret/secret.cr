@@ -35,12 +35,24 @@ module Crypto::Secret
     Readwrite
   end
 
+  extend ClassMethods
+
   # For debugging.
   # Returned String **not** tracked or wiped
   def hexstring : String
     readonly &.hexstring
   end
 
+  def random : self
+    readwrite do |slice|
+      Random::Secure.random_bytes slice
+    end
+    self
+  end
+
+  # Zeroes data
+  #
+  # Secret is unavailable (readonly/readwrite may fail) until reset
   def wipe
     readwrite do |slice|
       wipe_impl slice
@@ -55,6 +67,7 @@ module Crypto::Secret
   end
 
   def reset
+    wipe
   end
 
   def finalize
@@ -93,9 +106,13 @@ module Crypto::Secret
     end
   end
 
-  abstract def readwrite
-  abstract def readonly
-  abstract def noaccess
+
+  # Marks a region allocated using as read & write depending on implementation.
+  abstract def readwrite : self
+  # Marks a region allocated using as read-only depending on implementation.
+  abstract def readonly : self
+  # Makes a region allocated inaccessible depending on implementation. It cannot be read or written, but the data are preserved.
+  abstract def noaccess : self
 
   protected abstract def to_slice(& : Bytes -> Nil)
   abstract def bytesize : Int32

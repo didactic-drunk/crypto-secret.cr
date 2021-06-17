@@ -1,5 +1,6 @@
 module Crypto::Secret::ClassMethods
   # Copies `data` to the new Secret and **erases data**
+  #
   # Returns a **readonly** Secret
   def move_from(data : Bytes)
     copy_from data
@@ -8,6 +9,7 @@ module Crypto::Secret::ClassMethods
   end
 
   # Copies `data` to the new Secret
+  #
   # Returns a **readonly** Secret
   def copy_from(data : Bytes)
     new(data.bytesize).tap do |obj|
@@ -20,9 +22,6 @@ module Crypto::Secret::ClassMethods
   # Returns a **readonly** random Secret
   def random(size)
     buf = new(size)
-    buf.readwrite do |slice|
-      Random::Secure.random_bytes slice
-    end
-    buf.readonly
+    buf.random.readonly
   end
 end

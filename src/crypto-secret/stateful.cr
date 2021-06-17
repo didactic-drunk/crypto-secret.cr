@@ -17,6 +17,7 @@ module Crypto::Secret
     end
 
     @state = State::Readwrite
+    @pre_wipe_state = State::Readwrite
 
     # Temporarily make buffer readwrite within the block returning to the prior state on exit.
     # WARNING: Not thread safe unless this object is **readwrite**
@@ -65,6 +66,14 @@ module Crypto::Secret
       self
     end
 
+    def reset
+      case @state
+      when State::Wiped; set_state @pre_wipe_state
+      else
+        wipe_impl
+      end
+    end
+
     # WARNING: Not thread safe
     # Kept public for .dup
     # :nodoc:
@@ -72,12 +81,10 @@ module Crypto::Secret
       return if @state == new_state
 
       case new_state
-      when State::Readwrite; readwrite
-      when State::Readonly ; readonly
-      when State::Noaccess ; noaccess
-      when State::Wiped    ; raise Error::InvalidStateTransition.new
-      else
-        raise "unknown state #{new_state}"
+      in State::Readwrite; readwrite
+      in State::Readonly ; readonly
+      in State::Noaccess ; noaccess
+      in State::Wiped    ; raise Error::KeyWiped.new
       end
     end
 
@@ -100,6 +107,7 @@ module Crypto::Secret
     # WARNING: Not thread safe
     def wipe
       return if @state == State::Wiped
+      @pre_wipe_state = @state
       readwrite do |slice|
         wipe_impl slice
       end
