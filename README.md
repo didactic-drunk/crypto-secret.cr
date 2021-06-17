@@ -8,6 +8,9 @@ Secrets hold sensitive information
 
 The Secret interface manages limited time access to a secret and securely erases the secret when no longer needed.
 
+Multiple `Secret` classes exist.  Most of the time you shouldn't need to change the `Secret` type - the cryptographic library should have sane defaults.
+If you have a high security or high performance application see [which secret type should I choose?]()
+
 Secret providers may implement additional protections via:
 * `#noaccess`, `#readonly` or `#readwrite`
 * Using [mprotect]() to control access

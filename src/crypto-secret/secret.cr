@@ -6,6 +6,13 @@ require "./class_methods"
 # **Only for direct use by cryptographic library authors**
 #
 # For all other applications use a preexisting class that includes `Crypto::Secret`
+#
+# # Which class should I use?
+# * Crypto::Secret::Key - Use with small (<= 4096 bytes) keys
+# * Crypto::Secret::Large - Use for decrypted data that may stress mlock limits
+# * Crypto::Secret::Not - Won't get wiped but 0 overhead.  Only use when you're sure the data isn't secret
+#
+# Other shards may provide additional `Secret` types (sodium.cr)
 @[Experimental]
 module Crypto::Secret
   class Error < Exception

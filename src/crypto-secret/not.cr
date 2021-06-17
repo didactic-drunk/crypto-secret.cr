@@ -3,6 +3,10 @@ require "./stateless"
 module Crypto::Secret
   # A not very secret `Secret`, but fast
   #
+  # Suitable uses:
+  # * Holding decrypted data that is NOT secret
+  # * Verification keys that are public (use with care)
+  #
   # * 0 overhead
   # * Not locked in memory
   # * Not access protected
