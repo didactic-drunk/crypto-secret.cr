@@ -7,12 +7,12 @@ require "./class_methods"
 #
 # For all other applications use a preexisting class that includes `Crypto::Secret`
 #
-# # Which class should I use?
-# * Crypto::Secret::Key - Use with small (<= 4096 bytes) keys
-# * Crypto::Secret::Large - Use for decrypted data that may stress mlock limits
-# * Crypto::Secret::Not - Won't get wiped but 0 overhead.  Only use when you're sure the data isn't secret
+# ## Which class should I use?
+# * `Crypto::Secret::Key` - Use with small (<= 4096 bytes) keys
+# * `Crypto::Secret::Large` - Use for decrypted data that may stress mlock limits
+# * `Crypto::Secret::Not` - Only use when you're sure the data isn't secret.  0 overhead.  No wiping.
 #
-# Other shards may provide additional `Secret` types (sodium.cr)
+# Other shards may provide additional `Secret` types ([sodium.cr](https://github.com/didactic-drunk/sodium.cr))
 @[Experimental]
 module Crypto::Secret
   class Error < Exception
@@ -112,7 +112,7 @@ module Crypto::Secret
     end
   end
 
-  def wipe_impl(slice : Bytes) : Nil
+  protected def wipe_impl(slice : Bytes) : Nil
     slice.wipe
   end
 end

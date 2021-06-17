@@ -1,7 +1,7 @@
 require "./bidet"
 
 module Crypto::Secret
-  # Use this class for holding small amounts of sensitive data such as encryption keys
+  # Use this class for holding small amounts of sensitive data such as crypto keys
   #
   # Underlying implentation subject to change
   #
