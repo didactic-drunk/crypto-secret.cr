@@ -81,10 +81,12 @@ module Crypto::Secret
       return if @state == new_state
 
       case new_state
-      in State::Readwrite; readwrite
-      in State::Readonly ; readonly
-      in State::Noaccess ; noaccess
-      in State::Wiped    ; raise Error::KeyWiped.new
+      when State::Readwrite; readwrite
+      when State::Readonly ; readonly
+      when State::Noaccess ; noaccess
+      when State::Wiped    ; raise Error::KeyWiped.new
+      else
+        raise Error::InvalidStateTransition.new("can't change to #{new_state}")
       end
     end
 

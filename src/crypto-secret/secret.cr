@@ -113,11 +113,11 @@ module Crypto::Secret
   # Makes a region allocated inaccessible depending on implementation. It cannot be read or written, but the data are preserved.
   abstract def noaccess : self
 
-  protected abstract def to_slice(& : Bytes -> Nil)
+  protected abstract def to_slice(& : Bytes -> U) forall U
   abstract def bytesize : Int32
 
   macro delegate_to_slice(to object)
-    def to_slice(& : Bytes -> Nil)
+    def to_slice(& : Bytes -> U) forall U
       yield {{object.id}}.to_slice
     end
   end
