@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.36.1">
+<meta name="crystal_docs.project_version" content="0.2.0">
+<meta name="crystal_docs.project_name" content="crypto-secret">
+
+
+
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/doc.js"></script>
+
+  <meta name="repository-name" content="crypto-secret">
+  <title>crypto-secret 0.2.0</title>
+  <script type="text/javascript">
+  CrystalDocs.base_path = "";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="index.html">
+          crypto-secret
+        </a>
+      </h1>
+
+      <span class="project-version">
+        0.2.0
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="crypto-secret/toplevel" data-name="top level namespace">
+      <a href="toplevel.html">Top Level Namespace</a>
+      
+    </li>
+  
+  <li class="parent " data-id="crypto-secret/Crypto" data-name="crypto">
+      <a href="Crypto.html">Crypto</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="crypto-secret/Crypto/Secret" data-name="crypto::secret">
+      <a href="Crypto/Secret.html">Secret</a>
+      
+        <ul>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Bidet" data-name="crypto::secret::bidet">
+      <a href="Crypto/Secret/Bidet.html">Bidet</a>
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/ClassMethods" data-name="crypto::secret::classmethods">
+      <a href="Crypto/Secret/ClassMethods.html">ClassMethods</a>
+      
+    </li>
+  
+  <li class="parent " data-id="crypto-secret/Crypto/Secret/Error" data-name="crypto::secret::error">
+      <a href="Crypto/Secret/Error.html">Error</a>
+      
+        <ul>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Error/InvalidStateTransition" data-name="crypto::secret::error::invalidstatetransition">
+      <a href="Crypto/Secret/Error/InvalidStateTransition.html">InvalidStateTransition</a>
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Error/KeyWiped" data-name="crypto::secret::error::keywiped">
+      <a href="Crypto/Secret/Error/KeyWiped.html">KeyWiped</a>
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Error/OutOfMemory" data-name="crypto::secret::error::outofmemory">
+      <a href="Crypto/Secret/Error/OutOfMemory.html">OutOfMemory</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Key" data-name="crypto::secret::key">
+      <a href="Crypto/Secret/Key.html">Key</a>
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Large" data-name="crypto::secret::large">
+      <a href="Crypto/Secret/Large.html">Large</a>
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Not" data-name="crypto::secret::not">
+      <a href="Crypto/Secret/Not.html">Not</a>
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/State" data-name="crypto::secret::state">
+      <a href="Crypto/Secret/State.html">State</a>
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Stateful" data-name="crypto::secret::stateful">
+      <a href="Crypto/Secret/Stateful.html">Stateful</a>
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Crypto/Secret/Stateless" data-name="crypto::secret::stateless">
+      <a href="Crypto/Secret/Stateless.html">Stateless</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="crypto-secret/Slice" data-name="slice(t)">
+      <a href="Slice.html">Slice</a>
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1><a id="crypto-secret.cr" class="anchor" href="#crypto-secret.cr">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>crypto-secret.cr</h1>
+
+<p><a href="https://github.com/didactic-drunk/crypto-secret.cr/actions/workflows/crystal.yml"><img src="https://github.com/didactic-drunk/crypto-secret.cr/actions/workflows/crystal.yml/badge.svg" alt="Crystal CI"/></a>
+<a href="https://github.com/didactic-drunk/crypto-secret.cr/releases"><img src="https://img.shields.io/github/release/didactic-drunk/crypto-secret.cr.svg" alt="GitHub release"/></a>
+<img src="https://img.shields.io/github/commits-since/didactic-drunk/crypto-secret.cr/latest" alt="GitHub commits since latest release (by date) for a branch"/>
+<a href="https://didactic-drunk.github.io/crypto-secret.cr/main"><img src="https://img.shields.io/badge/docs-available-brightgreen.svg" alt="Docs"/></a></p>
+
+<p>Secrets hold sensitive information</p>
+
+<p>The Secret interface manages limited time access to a secret and securely erases the secret when no longer needed.</p>
+
+<p>Multiple <code>Secret</code> classes exist.  Most of the time you shouldn't need to change the <code>Secret</code> type - the cryptographic library should have sane defaults.
+If you have a high security or high performance application see <a href="https://didactic-drunk.github.io/crypto-secret.cr/main/Crypto/Secret.html">which secret type should I use?</a></p>
+
+<p>Secret providers may implement additional protections via:</p>
+
+<ul><li><code>#noaccess</code>, <code>#readonly</code> or <code>#readwrite</code></li><li>Using <a href="">mprotect</a> to control access</li><li>Encrypting the data when not in use</li><li>Deriving keys on demand from a HSM</li><li>Preventing the Secret from entering swap (<a href="">mlock</a>)</li><li>Preventing the Secret from entering core dumps</li><li>Other</li></ul>
+
+<h2><a id="installation" class="anchor" href="#installation">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Installation</h2>
+
+<ol><li>Add the dependency to your <code>shard.yml</code>:</li></ol>
+
+<p><code></code>`yaml
+   dependencies:</p>
+
+<pre><code class="language-crystal"> crypto-secret:
+   github: didactic-drunk/crypto-secret</code></pre>
+
+<p><code></code>`</p>
+
+<ol><li>Run <code>shards install</code></li></ol>
+
+<h2><a id="usage" class="anchor" href="#usage">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Usage</h2>
+
+<h4><a id="rules" class="anchor" href="#rules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Rules:</h4>
+
+<ol><li>Secrets should be erased (wiped) ASAP</li><li>Secrets are only available within a <code>readonly</code> or <code>readwrite</code> block</li><li>Secrets are not thread safe except for the provided <code><a href="Slice.html">Slice</a></code> (only when reading) within a single <code>readonly</code> or <code>readwrite</code> block </li></ol>
+
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;crypto-secret/bidet&quot;</span>
+
+<span class="c"># Bidet is a minimal but fast secret implementation</span>
+secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span>.<span class="k">new</span> <span class="n">32</span>
+<span class="c"># Don&#39;t forget to wipe!</span>
+secret.wipe <span class="k">do</span>
+  secret.readonly <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
+    <span class="c"># May only read slice</span>
+  <span class="k">end</span>
+  secret.readwrite <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
+    <span class="c"># May read or write to slice</span>
+  <span class="k">end</span>
+<span class="k">end</span> <span class="c"># secret is erased</span></code></pre>
+
+<h4><a id="breaking-the-rules" class="anchor" href="#breaking-the-rules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Breaking the rules:</h4>
+
+<p>If you need thread safety :</p>
+
+<ol><li>Switch to a Stateless Secret</li><li>Or switch the Secret's state to readonly or readwrite after construction and never switch it again.  <a href="">sodium.cr</a> makes use of this technique to provide thread safe encryption/decryption</li><li>Or wrap all access in a Mutex (compatible with all Secret classes)</li></ol>
+
+<p>If you need more better performance:</p>
+
+<ul><li>Consider 1. or 2.</li></ul>
+
+<p>If you need compatibility with any <code>Secret</code>:</p>
+
+<ul><li>Always use a <code>Mutex</code></li><li>Never rely on 1. or 2.</li></ul>
+
+<h4><a id="converting-bytes-to-a-secret" class="anchor" href="#converting-bytes-to-a-secret">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Converting <code>Bytes</code> to a <code>Secret</code></h4>
+
+<pre><code class="language-crystal">slice <span class="o">=</span> method_that_return_bytes()
+secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span>.move_from slice <span class="c"># erases slice</span>
+<span class="c"># or</span>
+secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span>.copy_from slice
+<span class="c"># or</span>
+secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span> size_in_bytes
+secret.move_from slice</code></pre>
+
+<h2><a id="what-is-a-secret" class="anchor" href="#what-is-a-secret">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>What is a Secret?</h2>
+
+<p>&lt;strike>Secrets are Keys&lt;/strike>
+That's complicated and specific to the application.  Some examples:</p>
+
+<ul><li>Passwords</li><li>A crypto key is always a Secret.  Except when used for verification (sometimes)</li><li>A decrypted password vault (but it's not a Key)</li></ul>
+
+<p>Not secrets:</p>
+
+<ul><li>Digest output.  Except when used for key derivation, then it's a Secret, including the Digest state</li><li>IO::Memory or writing a file.  Except when the file is a password vault, cryptocurrency wallet, encrypted mail/messages, goat porn, maybe "normal" porn, sometimes scat porn, occassionally furry, not people porn</li></ul>
+
+<h2><a id="why" class="anchor" href="#why">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Why?</h2>
+
+<p>The Secret interface is designed to handle varied levels of confidentiality with a unified API for cryptography libraries.</p>
+
+<p>There is no one size fits all solution.  Different applications have different security requirements.  Sometimes for the same algorithm.</p>
+
+<p>A master key (kgk) may reside on a HSM and generate subkeys on demand.
+Or for most applications the master key may use a best effort approach using a combination of [guard pages, mlock, mprotect].
+Other keys in the same application may handle a high volume of messages where [guard pages, mlock, mprotect] overhead is too high.
+A key verifying a public key signature may not be Secret (but is a Secret::Not).</p>
+
+<h2><a id="how-do-i-use-a-secret-returned-by-a-shard" class="anchor" href="#how-do-i-use-a-secret-returned-by-a-shard">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>How do I use a Secret returned by a shard?</h2>
+
+<p>That depends on what you use it for.</p>
+
+<h4><a id="using-a-secret-key" class="anchor" href="#using-a-secret-key">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Using a Secret key</h4>
+
+<p><span class="flag orange">TODO</span> </p>
+
+<h4><a id="using-a-secret-to-hold-decrypted-file-contents" class="anchor" href="#using-a-secret-to-hold-decrypted-file-contents">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Using a Secret to hold decrypted file contents:</h4>
+
+<pre><code class="language-crystal">key <span class="o">=</span> ...another <span class="t">Secret</span>...
+encrypted_str <span class="o">=</span> <span class="t">File</span>.read(<span class="s">&quot;filename&quot;</span>)
+decrypted_size <span class="o">=</span> encrypted_str.bytesize <span class="o">-</span> mac_size
+file_secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Default</span>.<span class="k">new</span> decrypted_size
+file_secret.wipe <span class="k">do</span>
+  file_secrets.readwrite <span class="k">do</span> <span class="o">|</span>slice<span class="o">|</span>
+    decrypt(key: key, src: encrypted_str, dst: slice)
+
+    <span class="c"># Do something with file contents in slice</span>
+  <span class="k">end</span>
+<span class="k">end</span> <span class="c"># Decrypted data is erased</span></code></pre>
+
+<h2><a id="when-should-i-use-a-secret" class="anchor" href="#when-should-i-use-a-secret">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>When should I use a Secret?</h2>
+
+<p>When implementing an encryption class return <code>Secret</code> keys with a sane default implementation that suits the average use for your class.  Several default implementations will be provided.
+Allow overriding the default returned key and/or allow users of your class to provide their own <code>Secret</code> for cases where they need more or less protection.</p>
+
+<p>Example:</p>
+
+<pre><code class="language-crystal"><span class="k">class</span> <span class="t">SimplifiedEncryption</span>
+  <span class="c"># Allow users of your library to provide their own Secret key.  Also provide a sane default.</span>
+  <span class="k">def</span> <span class="m">encrypt</span>(data : <span class="t">Bytes</span> <span class="o">|</span> <span class="t">String</span>, key : <span class="t">Secret</span>? <span class="o">=</span> <span class="n">nil</span>) : {<span class="t">Secret</span>, <span class="t">Bytes</span>}
+    key ||= <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Default</span>.random
+    ...
+    {key, encrypted_slice}
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+<h2><a id="what-attacks-does-a-secret-protect-against" class="anchor" href="#what-attacks-does-a-secret-protect-against">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>What attacks does a Secret protect against?</h2>
+
+<ul><li>Timing attacks when comparing secrets by overriding <code>==</code></li><li>Leaking data in to logs by overriding <code>inspect</code></li><li>Wiping memory when the secret is no longer in use</li></ul>
+
+<p><span class="flag orange">TODO</span>  describe implementations</p>
+
+<h2><a id="other-languageslibraries" class="anchor" href="#other-languageslibraries">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Other languages/libraries</h2>
+
+<ul><li>rust: <a href="https://github.com/stouset/secrets/">secrets</a></li><li>c: <a href="https://github.com/jedisct1/libsodium-doc/blob/master/helpers/memory_management.md#guarded_heap_allocations">libsodium</a></li><li>go: <a href="https://github.com/awnumar/memguard">memguard</a></li><li>haskell: <a href="https://hackage.haskell.org/package/securemem">securemem</a></li><li>c#: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.security.securestring">SecureString</a></li></ul>
+
+<h2><a id="implementing-a-new-secret-holding-class" class="anchor" href="#implementing-a-new-secret-holding-class">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Implementing a new Secret holding class</h2>
+
+<p><strong>Only intended for use by crypto library authors</strong></p>
+
+<pre><code class="language-crystal"><span class="k">class</span> <span class="t">MySecret</span>
+  <span class="c"># Choose one</span>
+  <span class="k">include</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Stateless</span>
+  <span class="k">include</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Stateful</span>
+
+  <span class="k">def</span> <span class="m">initialize</span>(size)
+    <span class="c"># allocate or reference storage</span>
+    <span class="c"># optionally mlock</span>
+  <span class="k">end</span>
+
+  <span class="k">protected</span> <span class="k">def</span> <span class="m">to_slice</span>(<span class="o">&amp;</span> : <span class="t">Bytes</span> -> <span class="t">Nil</span>)
+    <span class="c"># The yielded Slice only needs to be valid within the block</span>
+    <span class="c"># yield Slice.new(pointer, size)</span>
+  <span class="k">ensure</span>
+    <span class="c"># optionally reencrypt or signal HSM</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">bytesize</span> : <span class="t">Int32</span>
+    <span class="c"># return the size</span>
+  <span class="k">end</span>
+
+  <span class="c"># optionally override [noaccess, readonly, readwrite]</span>
+  <span class="c"># optionally override (almost) any other method with an implementation specific version</span>
+<span class="k">end</span>
+</code></pre>
+
+<h2><a id="contributing" class="anchor" href="#contributing">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Contributing</h2>
+
+<p><strong>Open a discussion or issue before creating PR's</strong></p>
+
+<ol><li>Fork it (&lt;https://github.com/your-github-user/crypto-secret/fork>)</li><li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li><li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li><li>Push to the branch (<code>git push origin my-new-feature</code>)</li><li>Create a new Pull Request</li></ol>
+
+<h2><a id="contributors" class="anchor" href="#contributors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Contributors</h2>
+
+<ul><li><a href="https://github.com/didactic-drunk">didactic-drunk</a> - current maintainer</li></ul>
+</div>
+</body>
+</html>
