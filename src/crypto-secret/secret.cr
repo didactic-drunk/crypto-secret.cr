@@ -3,10 +3,6 @@ require "./class_methods"
 
 # Interface to hold sensitive information (often cryptographic keys)
 #
-# **Only for direct use by cryptographic library authors**
-#
-# For all other applications use a preexisting class that includes `Crypto::Secret`
-#
 # ## Which class should I use?
 # * `Crypto::Secret::Key` - Use with small (<= 4096 bytes) keys
 # * `Crypto::Secret::Large` - Use for decrypted data that may stress mlock limits
@@ -53,11 +49,23 @@ module Crypto::Secret
     data.wipe
   end
 
+  # Copies then wipes *data*
+  #
+  # Prefer this method over `#copy_from`
+  def move_from(data : Crypto::Secret) : Nil
+    data.readonly { |dslice| move_from dslice }
+  end
+
   # Copies from *data*
   def copy_from(data : Bytes) : Nil
     readwrite do |slice|
       slice.copy_from data
     end
+  end
+
+  # Copies from *data*
+  def copy_from(data : Crypto::Secret) : Nil
+    data.readonly { |dslice| copy_from dslice }
   end
 
   # Fills `Secret` with secure random data

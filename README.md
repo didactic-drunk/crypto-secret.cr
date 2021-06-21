@@ -73,7 +73,7 @@ If you need compatibility with any `Secret`:
 
 #### Converting `Bytes` to a `Secret`
 ```crystal
-slice = method_that_return_bytes()
+slice = method_that_returns_bytes()
 secret = Crypto::Secret::Bidet.move_from slice # erases slice
 # or
 secret = Crypto::Secret::Bidet.copy_from slice
@@ -109,18 +109,26 @@ A key verifying a public key signature may not be Secret (but is a Secret::Not).
 
 ## How do I use a Secret returned by a shard?
 
-That depends on what you use it for.
+#### Accessing as a `Slice(UInt8) | Bytes`
 
-#### Using a Secret key
-
-TODO
+```crystal
+secret = method_that_returns_a_secret()
+secret.wipe do
+  secret.readonly do |slice|
+    ...
+  end
+  secret.readwrite do |slice|
+    ...
+  end
+end
+```
 
 #### Using a Secret to hold decrypted file contents:
-```
+```crystal
 key = ...another Secret...
 encrypted_str = File.read("filename")
 decrypted_size = encrypted_str.bytesize - mac_size
-file_secret = Crypto::Secret::Default.new decrypted_size
+file_secret = Crypto::Secret::Large.new decrypted_size
 file_secret.wipe do
   file_secrets.readwrite do |slice|
     decrypt(key: key, src: encrypted_str, dst: slice)
@@ -130,9 +138,19 @@ file_secret.wipe do
 end # Decrypted data is erased
 ```
 
+#### Reusing a `Secret`
+
+```crystal
+# May be used to generate new keys
+secret.random
+
+# Copy to secret and wipe `slice`
+secret.move_from slice
+```
+
 ## When should I use a Secret?
 
-When implementing an encryption class return `Secret` keys with a sane default implementation that suits the average use for your class.  Several default implementations will be provided.
+When implementing an encryption class return `Secret` keys with a sane default implementation that suits the average use for your class.  Several default implementations are provided.
 Allow overriding the default returned key and/or allow users of your class to provide their own `Secret` for cases where they need more or less protection.
 
 Example:
@@ -154,7 +172,11 @@ end
 * Leaking data in to logs by overriding `inspect`
 * Wiping memory when the secret is no longer in use
 
-TODO: describe implementations
+Each implementation may add additional protections
+
+* `Crypto::Secret::Key` - May use mlock, mprotect and canaries in future versions
+* `Crypto::Secret::Large` - May use mprotect in future versions
+* `Crypto::Secret::Not` - It's not secret.  Doesn't wipe and no additional protection.
 
 
 ## Other languages/libraries
