@@ -248,7 +248,10 @@ secret.wipe <span class="k">do</span>
 <pre><code class="language-crystal">slice <span class="o">=</span> method_that_return_bytes()
 secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span>.move_from slice <span class="c"># erases slice</span>
 <span class="c"># or</span>
-secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span>.copy_from slice</code></pre>
+secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span>.copy_from slice
+<span class="c"># or</span>
+secret <span class="o">=</span> <span class="t">Crypto</span><span class="t">::</span><span class="t">Secret</span><span class="t">::</span><span class="t">Bidet</span> size_in_bytes
+secret.move_from slice</code></pre>
 
 <h2><a id="what-is-a-secret" class="anchor" href="#what-is-a-secret">
   <svg class="octicon-link" aria-hidden="true">
