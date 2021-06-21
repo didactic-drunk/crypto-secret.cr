@@ -38,11 +38,29 @@ module Crypto::Secret
   extend ClassMethods
 
   # For debugging.
+  #
   # Returned String **not** tracked or wiped
   def hexstring : String
     readonly &.hexstring
   end
 
+  # Copies then wipes *data*
+  #
+  # Prefer this method over `#copy_from`
+  def move_from(data : Bytes) : Nil
+    copy_from data
+  ensure
+    data.wipe
+  end
+
+  # Copies from *data*
+  def copy_from(data : Bytes) : Nil
+    readwrite do |slice|
+      slice.copy_from data
+    end
+  end
+
+  # Fills `Secret` with secure random data
   def random : self
     readwrite do |slice|
       Random::Secure.random_bytes slice

@@ -77,6 +77,9 @@ slice = method_that_return_bytes()
 secret = Crypto::Secret::Bidet.move_from slice # erases slice
 # or
 secret = Crypto::Secret::Bidet.copy_from slice
+# or
+secret = Crypto::Secret::Bidet size_in_bytes
+secret.move_from slice
 ```
 
 ## What is a Secret?

@@ -6,7 +6,7 @@ require "./bidet"
 #
 # Uses `Sodium::SecureBuffer` If "sodium" is required before "crypto-secret"
 {% if @type.has_constant?("Sodium") %}
-  class Crypto::Secret::Key < ::Sodum::SecureBuffer
+  class Crypto::Secret::Key < ::Sodium::SecureBuffer
   end
 {% else %}
   # TODO: mlock

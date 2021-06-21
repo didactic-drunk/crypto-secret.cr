@@ -13,9 +13,7 @@ module Crypto::Secret::ClassMethods
   # Returns a **readonly** Secret
   def copy_from(data : Bytes)
     new(data.bytesize).tap do |obj|
-      obj.readwrite do |slice|
-        data.copy_to slice
-      end
+      obj.copy_from data
     end
   end
 
