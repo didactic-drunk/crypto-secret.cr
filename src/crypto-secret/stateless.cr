@@ -47,11 +47,6 @@ module Crypto::Secret::Stateless
   end
 
   # Not thread safe
-  def noaccess(& : Bytes -> U) forall U
-    yield
-  end
-
-  # Not thread safe
   def reset
   end
 

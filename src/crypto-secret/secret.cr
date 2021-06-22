@@ -144,8 +144,6 @@ module Crypto::Secret
   abstract def readwrite(& : Bytes -> U) forall U
   # Temporarily marks a region as readonly depending on implementation and yields `Bytes`
   abstract def readonly(& : Bytes -> U) forall U
-  # Temporarily Makes a region inaccessible depending on implementation. It cannot be read or written, but the data are preserved.
-  abstract def noaccess(& : Bytes -> U) forall U
 
   protected abstract def to_slice(& : Bytes -> U) forall U
   abstract def bytesize : Int32
