@@ -33,7 +33,7 @@ module Crypto::Secret
 
   extend ClassMethods
 
-  # For debugging.
+  # For debugging.  Leaks the secret
   #
   # Returned String **not** tracked or wiped
   def hexstring : String
@@ -92,6 +92,7 @@ module Crypto::Secret
     wipe
   end
 
+  # Wipes data & makes this object available for reuse
   def reset
     wipe
   end
@@ -132,12 +133,19 @@ module Crypto::Secret
     end
   end
 
-  # Marks a region allocated using as read & write depending on implementation.
+  # Marks a region as read & write depending on implementation.
   abstract def readwrite : self
-  # Marks a region allocated using as read-only depending on implementation.
+  # Marks a region as read-only depending on implementation.
   abstract def readonly : self
-  # Makes a region allocated inaccessible depending on implementation. It cannot be read or written, but the data are preserved.
+  # Makes a region inaccessible depending on implementation. It cannot be read or written, but the data are preserved.
   abstract def noaccess : self
+
+  # Temporarily marks a region as read & write depending on implementation and yields `Bytes`
+  abstract def readwrite(& : Bytes -> U) forall U
+  # Temporarily marks a region as readonly depending on implementation and yields `Bytes`
+  abstract def readonly(& : Bytes -> U) forall U
+  # Temporarily Makes a region inaccessible depending on implementation. It cannot be read or written, but the data are preserved.
+  abstract def noaccess(& : Bytes -> U) forall U
 
   protected abstract def to_slice(& : Bytes -> U) forall U
   abstract def bytesize : Int32

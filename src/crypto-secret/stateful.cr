@@ -40,7 +40,7 @@ module Crypto::Secret
 
     # Temporarily make buffer readonly within the block returning to the prior state on exit.
     # WARNING: Not thread safe unless this object is readonly or readwrite
-    def readonly
+    def readonly(& : Bytes -> U) forall U
       with_state State::Readonly do
         to_slice do |slice|
           yield slice

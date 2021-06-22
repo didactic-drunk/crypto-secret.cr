@@ -20,7 +20,7 @@ module Crypto::Secret::Stateless
   # `slice` is only available within the block
   #
   # Not thread safe
-  def readwrite
+  def readwrite(& : Bytes -> U) forall U
     to_slice do |slice|
       yield slice
     end
@@ -35,7 +35,7 @@ module Crypto::Secret::Stateless
   # Don't write to it
   #
   # Not thread safe
-  def readonly
+  def readonly(& : Bytes -> U) forall U
     to_slice do |slice|
       yield slice
     end
@@ -47,7 +47,7 @@ module Crypto::Secret::Stateless
   end
 
   # Not thread safe
-  def noaccess
+  def noaccess(& : Bytes -> U) forall U
     yield
   end
 
