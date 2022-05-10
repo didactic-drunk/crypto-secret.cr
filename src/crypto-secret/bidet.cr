@@ -7,10 +7,10 @@ module Crypto::Secret
   # * Not access protected
   # * No guard pages
   # * Hours of fun
-  class Bidet
+  class Bidet < Base
     include Stateless
 
-    def self.new(size)
+    def self.new(size : Int32)
       new references: Bytes.new(size)
     end
 
