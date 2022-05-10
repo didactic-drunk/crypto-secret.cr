@@ -1,6 +1,13 @@
 require "./lib"
 require "./class_methods"
 
+macro finished
+  {% for key, klass in Crypto::Secret::REGISTERED_USES %}
+    require {{ Crypto::Secret::REGISTERED_LOAD_PATHS[klass] }}
+    Crypto::Secret::REGISTERED[{{key.id}}] = {{klass}}
+  {% end %}
+end
+
 # Interface to hold sensitive information (often cryptographic keys)
 #
 # ## Which class should I use?
@@ -32,6 +39,34 @@ module Crypto::Secret
   end
 
   extend ClassMethods
+
+  REGISTERED = Hash(Symbol, Secret).new
+  REGISTERED_USES = {} of Nil => Nil
+  REGISTERED_LOAD_PATHS = {} of Nil => Nil
+
+  macro register(klass, *args)
+p "{{ args.id}}"
+    {% for arg in args %}
+      {% REGISTERED_USES[arg] = klass %}
+    {% end %}
+  end
+
+  macro register_class(klass, load_path, *uses)
+    {% REGISTERED_LOAD_PATHS[klass] = load_path %}
+    register *uses
+  end
+
+  register_class "Crypto::Secret::Bidet", "./bidet", :ksk, :key, :data
+  register_class "Crypto::Secret::Not", "./not"
+  register "Crypto::Secret::Bidet", :ksk, :key, :data
+
+  def self.for(use) : Crypto::Secret
+    REGISTERED[use]
+  end
+
+  def self.for(use, size)
+    for(use).new(size)
+  end
 
   # For debugging.  Leaks the secret
   #
