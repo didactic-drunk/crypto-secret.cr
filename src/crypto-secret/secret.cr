@@ -1,13 +1,6 @@
 require "./lib"
 require "./class_methods"
 
-macro finished
-  {% for key, klass in Crypto::Secret::REGISTERED_USES %}
-    require {{ Crypto::Secret::REGISTERED_LOAD_PATHS[klass] }}
-    Crypto::Secret::REGISTERED[{{key.id}}] = {{klass}}
-  {% end %}
-end
-
 # Interface to hold sensitive information (often cryptographic keys)
 #
 # ## Which class should I use?
@@ -40,9 +33,14 @@ module Crypto::Secret
 
   extend ClassMethods
 
-  REGISTERED = Hash(Symbol, Secret).new
-  REGISTERED_USES = {} of Nil => Nil
-  REGISTERED_LOAD_PATHS = {} of Nil => Nil
+  abstract class Base
+  end
+
+  REGISTERED = Hash(Symbol, Secret::Base.class).new
+#  REGISTERED_USES = {} of Nil => Nil
+  REGISTERED_USES = {} of Symbol => String
+#  REGISTERED_LOAD_PATHS = {} of Nil => Nil
+  REGISTERED_LOAD_PATHS = {} of String => String
 
   macro register(klass, *args)
 p "{{ args.id}}"
@@ -57,14 +55,14 @@ p "{{ args.id}}"
   end
 
   register_class "Crypto::Secret::Bidet", "./bidet", :ksk, :key, :data
-  register_class "Crypto::Secret::Not", "./not"
+#  register_class "Crypto::Secret::Not", "./not"
   register "Crypto::Secret::Bidet", :ksk, :key, :data
 
-  def self.for(use) : Crypto::Secret
+  def self.for(use : Symbol) : Crypto::Secret::Base.class
     REGISTERED[use]
   end
 
-  def self.for(use, size)
+  def self.for(use : Symbol, size : Int32)
     for(use).new(size)
   end
 
@@ -199,3 +197,13 @@ p "{{ args.id}}"
     slice.wipe
   end
 end
+
+macro finished
+  {% for key, klass in Crypto::Secret::REGISTERED_USES %}
+#puts "{{key}}={{klass}}"
+puts "key=klass"
+    require {{ Crypto::Secret::REGISTERED_LOAD_PATHS[klass] }}
+    Crypto::Secret::REGISTERED[:{{key.id}}] = {{klass.id}}
+  {% end %}
+end
+
