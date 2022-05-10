@@ -1,2 +1,4 @@
-require "./not"
-require "./bidet"
+#require "./not"
+require "./secret"
+# require "./large"
+# require "./key"
