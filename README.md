@@ -192,12 +192,12 @@ Each implementation may add additional protections
 **Only intended for use by crypto library authors**
 
 ```
-class MySecret
+class MySecret < Crypto::Secret
   # Choose one
   include Crypto::Secret::Stateless
   include Crypto::Secret::Stateful
 
-  def initialize(size)
+  def initialize(size : Int32)
     # allocate or reference storage
     # optionally mlock
   end
@@ -209,7 +209,7 @@ class MySecret
     # optionally reencrypt or signal HSM
   end
 
-  def bytesize : Int32
+  def buffer_bytesize : Int32
     # return the size
   end
 

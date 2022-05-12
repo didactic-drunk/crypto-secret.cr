@@ -1,5 +1,5 @@
 module Crypto
-  module Secret
+  abstract class Secret
     module Stateless
     end
 

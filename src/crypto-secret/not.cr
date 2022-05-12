@@ -1,6 +1,6 @@
 require "./stateless"
 
-module Crypto::Secret
+abstract class Crypto::Secret
   # A not very secret `Secret`, but fast
   #
   # Suitable uses:
@@ -12,7 +12,7 @@ module Crypto::Secret
   # * Not access protected
   # * No guard pages
   # * No wiping
-  struct Not
+  class Not < Secret
     include Stateless
 
     def self.new(size : Int32)
@@ -25,7 +25,7 @@ module Crypto::Secret
     end
 
     delegate_to_slice @bytes
-    delegate_to_bytesize @bytes.bytesize
+    delegate_buffer_bytesize_to @bytes.bytesize
 
     def wipe
     end

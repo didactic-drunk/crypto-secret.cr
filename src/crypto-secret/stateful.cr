@@ -1,6 +1,6 @@
 require "./secret"
 
-module Crypto::Secret
+abstract class Crypto::Secret
   # Development guide:
   # 1. Create your initialize method and optionally allocate memory
   # 2. Create a finalize method to deallocate memory if necessary
@@ -10,12 +10,6 @@ module Crypto::Secret
   #
   # When state changes are required (such as using #noaccess) and the buffer is accessed from multiple threads wrap each #readonly/#readwrite block in a lock.
   module Stateful
-    include Crypto::Secret
-
-    macro included
-      extend ClassMethods
-    end
-
     @state = State::Readwrite
     @pre_wipe_state = State::Readwrite
 

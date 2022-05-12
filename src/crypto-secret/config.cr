@@ -1,3 +1,6 @@
+require "./not"
+require "./bidet"
+
 {% if @type.has_constant?("Sodium") %}
   CRYPTO_SECRET_KEY_CLASS = Sodium::SecureBuffer
 {% else %}
@@ -12,23 +15,23 @@ module Crypto::Secret::Config
     Paranoid
     Default
     Lax
-    None
+    #    None
   end
 
-  def self.setup(how : SecurityLevel = SecurityLevel::Default) : Nil
-    case how
-      in SecurityLevel::Paranoid
-        register_use Bidet, :not
-        register_use CRYPTO_SECRET_KEY_CLASS, :kgk, :key, :data
-      in SecurityLevel::Default
-        register_use Not, :not
-        register_use Bidet, :data
-        register_use CRYPTO_SECRET_KEY_CLASS, :kgk, :key
-      in SecurityLevel::Lax
-        register_use Not, :not
-        register_use Bidet, :kgk, :key, :data
-      in SecurityLevel::None
-        register_use Not, :kgk, :key, :data, :not
+  def self.setup(level : SecurityLevel = SecurityLevel::Default) : Nil
+    register_use Not, :not
+
+    case level
+    in SecurityLevel::Paranoid
+      register_use Bidet, :not
+      register_use CRYPTO_SECRET_KEY_CLASS, :kgk, :key, :data
+    in SecurityLevel::Default
+      register_use Crypto::Secret::Bidet, :data
+      register_use CRYPTO_SECRET_KEY_CLASS, :kgk, :key
+    in SecurityLevel::Lax
+      register_use Bidet, :kgk, :key, :data
+      #      in SecurityLevel::None
+      #        register_use Not, :kgk, :key, :data
     end
   end
 

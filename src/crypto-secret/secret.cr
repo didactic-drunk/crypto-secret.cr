@@ -10,7 +10,7 @@ require "./class_methods"
 #
 # Other shards may provide additional `Secret` types ([sodium.cr](https://github.com/didactic-drunk/sodium.cr))
 @[Experimental]
-module Crypto::Secret
+abstract class Crypto::Secret
   class Error < Exception
     class KeyWiped < Error
     end
@@ -162,7 +162,11 @@ module Crypto::Secret
   abstract def readonly(& : Bytes -> U) forall U
 
   protected abstract def to_slice(& : Bytes -> U) forall U
-  abstract def bytesize : Int32
+  abstract def buffer_bytesize : Int32
+
+  def bytesize : Int32
+    buffer_bytesize
+  end
 
   macro delegate_to_slice(to object)
     def to_slice(& : Bytes -> U) forall U
@@ -170,8 +174,8 @@ module Crypto::Secret
     end
   end
 
-  macro delegate_to_bytesize(to object)
-    def bytesize : Int32
+  macro delegate_buffer_bytesize_to(to object)
+    def buffer_bytesize : Int32
       {{object.id}}
     end
   end
@@ -179,15 +183,6 @@ module Crypto::Secret
   protected def wipe_impl(slice : Bytes) : Nil
     slice.wipe
   end
-end
-
-macro finished
-  {% for key, klass in Crypto::Secret::REGISTERED_USES %}
-#puts "{{key}}={{klass}}"
-puts "key=klass"
-    require {{ Crypto::Secret::REGISTERED_LOAD_PATHS[klass] }}
-    Crypto::Secret::REGISTERED[:{{key.id}}] = {{klass.id}}
-  {% end %}
 end
 
 require "./config"
