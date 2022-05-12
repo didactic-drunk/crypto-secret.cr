@@ -2,14 +2,11 @@ require "./secret"
 
 # Provides a 0 overhead implementation of [#readwrite, #readonly, #noaccess, #reset] with no protection
 #
-# Data is erased when #wipe is out of scope, manual #wipe, or finalized except for `Not`
+# Data is erased when (except for `Crypto::Secret::Not`):
+# * #wipe(&block) goes out of scope
+# * manual #wipe
+# * finalized
 module Crypto::Secret::Stateless
-  include Crypto::Secret
-
-  macro included
-    extend ClassMethods
-  end
-
   # Not thread safe
   def readwrite : Secret
     self
