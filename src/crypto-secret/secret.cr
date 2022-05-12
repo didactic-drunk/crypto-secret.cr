@@ -33,37 +33,20 @@ module Crypto::Secret
 
   extend ClassMethods
 
-  abstract class Base
+  def self.new(size : Int32)
+    raise NotImplementedError.new("workaround for lack of `abstract def self.new`")
   end
 
-  REGISTERED = Hash(Symbol, Secret::Base.class).new
-#  REGISTERED_USES = {} of Nil => Nil
-  REGISTERED_USES = {} of Symbol => String
-#  REGISTERED_LOAD_PATHS = {} of Nil => Nil
-  REGISTERED_LOAD_PATHS = {} of String => String
-
-  macro register(klass, *args)
-p "{{ args.id}}"
-    {% for arg in args %}
-      {% REGISTERED_USES[arg] = klass %}
-    {% end %}
+  def self.for(secret : Crypto::Secret) : Crypto::Secret
+    secret
   end
 
-  macro register_class(klass, load_path, *uses)
-    {% REGISTERED_LOAD_PATHS[klass] = load_path %}
-    register *uses
-  end
-
-  register_class "Crypto::Secret::Bidet", "./bidet", :ksk, :key, :data
-#  register_class "Crypto::Secret::Not", "./not"
-  register "Crypto::Secret::Bidet", :ksk, :key, :data
-
-  def self.for(use : Symbol) : Crypto::Secret::Base.class
-    REGISTERED[use]
-  end
-
-  def self.for(use : Symbol, size : Int32)
+  def self.for(use : Symbol, size : Int32) : Crypto::Secret
     for(use).new(size)
+  end
+
+  def self.for(use : Symbol) : Crypto::Secret.class
+    Config::USES[use]
   end
 
   # For debugging.  Leaks the secret
@@ -207,3 +190,4 @@ puts "key=klass"
   {% end %}
 end
 
+require "./config"

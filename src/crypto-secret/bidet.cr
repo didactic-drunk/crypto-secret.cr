@@ -3,6 +3,7 @@ require "./stateless"
 module Crypto::Secret
   # Leaves less sh** around if you forget to wipe.  A safer default for large secrets that may stress mlock limits or low confidentiality secrets.
   #
+  # * Wipes on finalize but should not be relied on
   # * Not locked in memory
   # * Not access protected
   # * No guard pages

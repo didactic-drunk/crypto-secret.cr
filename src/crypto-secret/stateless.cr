@@ -2,7 +2,7 @@ require "./secret"
 
 # Provides a 0 overhead implementation of [#readwrite, #readonly, #noaccess, #reset] with no protection
 #
-# Data is still erased when out of scope
+# Data is erased when #wipe is out of scope, manual #wipe, or finalized except for `Not`
 module Crypto::Secret::Stateless
   include Crypto::Secret
 
@@ -11,7 +11,7 @@ module Crypto::Secret::Stateless
   end
 
   # Not thread safe
-  def readwrite : self
+  def readwrite : Secret
     self
   end
 
@@ -27,7 +27,7 @@ module Crypto::Secret::Stateless
   end
 
   # Not thread safe
-  def readonly : self
+  def readonly : Secret
     self
   end
 
@@ -42,12 +42,13 @@ module Crypto::Secret::Stateless
   end
 
   # Not thread safe
-  def noaccess : self
+  def noaccess : Secret
     self
   end
 
   # Not thread safe
-  def reset
+  def reset : Secret
+    self
   end
 
   def finalize
