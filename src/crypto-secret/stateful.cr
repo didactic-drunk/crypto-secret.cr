@@ -1,6 +1,5 @@
 require "./secret"
 
-abstract class Crypto::Secret
   # Development guide:
   # 1. Create your initialize method and optionally allocate memory
   # 2. Create a finalize method to deallocate memory if necessary
@@ -9,7 +8,7 @@ abstract class Crypto::Secret
   # 5. Provide and test a dup method or raise on dup if not possible
   #
   # When state changes are required (such as using #noaccess) and the buffer is accessed from multiple threads wrap each #readonly/#readwrite block in a lock.
-  module Stateful
+module Crypto::Secret::Stateful
     @state = State::Readwrite
     @pre_wipe_state = State::Readwrite
 
@@ -121,4 +120,3 @@ abstract class Crypto::Secret
     protected abstract def readonly_impl : Nil
     protected abstract def noaccess_impl : Nil
   end
-end
