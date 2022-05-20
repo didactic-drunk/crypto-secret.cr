@@ -31,7 +31,9 @@ abstract class Crypto::Secret
     Readwrite
   end
 
-  extend ClassMethods
+  macro inherited
+    extend ClassMethods
+  end
 
   def self.new(size : Int32)
     raise NotImplementedError.new("workaround for lack of `abstract def self.new`")
@@ -41,12 +43,23 @@ abstract class Crypto::Secret
     secret
   end
 
-  def self.for(use : Symbol, size : Int32) : Crypto::Secret
-    for(use).new(size)
+
+  def self.for(size : Int32, *uses) : Crypto::Secret
+    for(*uses).new(size)
   end
 
-  def self.for(use : Symbol) : Crypto::Secret.class
-    Config::USES[use]
+  def self.for(size : Int32, secret : Crypto::Secret) : Crypto::Secret
+    raise ArgumentError.new("") unless size == secret.bytesize
+    secret
+  end
+
+  def self.for(*uses) : Crypto::Secret.class
+    uses.each do |use|
+      if klass = Config::USES[use]?
+        return klass
+      end
+    end
+    raise KeyError.new("missing #{uses}, have #{Config::USES.keys}")
   end
 
   # For debugging.  Leaks the secret
