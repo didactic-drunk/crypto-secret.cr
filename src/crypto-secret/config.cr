@@ -18,20 +18,22 @@ module Crypto::Secret::Config
     #    None
   end
 
-  def self.setup(level : SecurityLevel = SecurityLevel::Default) : Nil
+  def self.setup(level : SecurityLevel = :default) : Nil
     register_use Not, :not
 
     case level
     in SecurityLevel::Paranoid
-      register_use Bidet, :not
-      register_use CRYPTO_SECRET_KEY_CLASS, :kgk, :key, :data
+      register_use Bidet, :not, :public_key
+      register_use CRYPTO_SECRET_KEY_CLASS, :kgk, :secret_key, :data
     in SecurityLevel::Default
+      register_use Not, :public_key
       register_use Crypto::Secret::Bidet, :data
-      register_use CRYPTO_SECRET_KEY_CLASS, :kgk, :key
+      register_use CRYPTO_SECRET_KEY_CLASS, :kgk, :secret_key
     in SecurityLevel::Lax
-      register_use Bidet, :kgk, :key, :data
+      register_use Not, :public_key
+      register_use Bidet, :kgk, :secret_key, :data
       #      in SecurityLevel::None
-      #        register_use Not, :kgk, :key, :data
+      #        register_use Not, :kgk, :secret_key, :data
     end
   end
 
