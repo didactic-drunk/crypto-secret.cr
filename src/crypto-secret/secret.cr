@@ -39,10 +39,9 @@ abstract class Crypto::Secret
     raise NotImplementedError.new("workaround for lack of `abstract def self.new`")
   end
 
-  def self.for(secret : Crypto::Secret) : Crypto::Secret
-    secret
+  def self.random(size : Int32, *uses : Symbol) : Crypto::Secret
+    for(size, *uses).random
   end
-
 
   def self.for(size : Int32, *uses) : Crypto::Secret
     for(*uses).new(size)
@@ -53,7 +52,7 @@ abstract class Crypto::Secret
     secret
   end
 
-  def self.for(*uses) : Crypto::Secret.class
+  def self.for(*uses : Symbol) : Crypto::Secret.class
     uses.each do |use|
       if klass = Config::USES[use]?
         return klass
