@@ -11,6 +11,20 @@ The Secret interface manages limited time access to a secret and securely erases
 Multiple `Secret` classes exist.  Most of the time you shouldn't need to change the `Secret` type - the cryptographic library should have sane defaults.
 If you have a high security or high performance application see [which secret type should I use?](https://didactic-drunk.github.io/crypto-secret.cr/main/Crypto/Secret.html)
 
+
+## What attacks does a Secret protect against?
+
+* Timing attacks when comparing secrets by overriding `==`
+* Leaking data in to logs by overriding `inspect`
+* Wiping memory when the secret is no longer in use
+
+Each implementation may add additional protections
+
+* `Crypto::Secret::Key` - May use mlock, mprotect and canaries in future versions
+* `Crypto::Secret::Large` - May use mprotect in future versions
+* `Crypto::Secret::Not` - It's not secret.  Doesn't wipe and no additional protection.
+
+
 Secret providers may implement additional protections via:
 * `#noaccess`, `#readonly` or `#readwrite`
 * Using [mprotect]() to control access
@@ -44,12 +58,11 @@ Secret providers may implement additional protections via:
 ```crystal
 require "crypto-secret/bidet"
 
-# Bidet is a minimal but fast secret implementation
-secret = Crypto::Secret::Bidet.new 32
+secret = Crypto::Secret.for(32, :secret_key)
 # Don't forget to wipe!
 secret.wipe do
   secret.readonly do |slice|
-    # May only read slice
+    # May only read from slice
   end
   secret.readwrite do |slice|
     # May read or write to slice
@@ -128,9 +141,9 @@ end
 key = ...another Secret...
 encrypted_str = File.read("filename")
 decrypted_size = encrypted_str.bytesize - mac_size
-file_secret = Crypto::Secret::Large.new decrypted_size
+file_secret = Crypto::Secret.for(decrypted_size, :data)
 file_secret.wipe do
-  file_secrets.readwrite do |slice|
+  file_secret.readwrite do |slice|
     decrypt(key: key, src: encrypted_str, dst: slice)
 
     # Do something with file contents in slice
@@ -159,25 +172,12 @@ Example:
 class SimplifiedEncryption
   # Allow users of your library to provide their own Secret key.  Also provide a sane default.
   def encrypt(data : Bytes | String, key : Secret? = nil) : {Secret, Bytes}
-    key ||= Crypto::Secret::Default.random
+    key ||= Crypto::Secret.for(key_size, :secret_key)
     ...
     {key, encrypted_slice}
   end
 end
 ```
-
-## What attacks does a Secret protect against?
-
-* Timing attacks when comparing secrets by overriding `==`
-* Leaking data in to logs by overriding `inspect`
-* Wiping memory when the secret is no longer in use
-
-Each implementation may add additional protections
-
-* `Crypto::Secret::Key` - May use mlock, mprotect and canaries in future versions
-* `Crypto::Secret::Large` - May use mprotect in future versions
-* `Crypto::Secret::Not` - It's not secret.  Doesn't wipe and no additional protection.
-
 
 ## Other languages/libraries
 
@@ -213,7 +213,8 @@ class MySecret < Crypto::Secret
     # return the size
   end
 
-  # optionally override [noaccess, readonly, readwrite]
+  # if Stateful provide [noaccess_impl, readonly_impl, readwrite_impl]
+
   # optionally override (almost) any other method with an implementation specific version
 end
 
