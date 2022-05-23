@@ -40,11 +40,13 @@ abstract class Crypto::Secret
     raise NotImplementedError.new("workaround for lack of `abstract def self.new`")
   end
 
-  def self.random(size : Int32, *uses : Symbol) : Crypto::Secret
-    for(size, *uses).random
+  #  def self.random(size : Int32, *uses : Symbol, *, random = Random::Secure) : Crypto::Secret
+  def self.random(size : Int32, *uses : Symbol, **options) : Crypto::Secret
+    rand = options[:random]? || Random::Secure
+    for(size, *uses).random(random: rand)
   end
 
-  def self.for(size : Int32, *uses) : Crypto::Secret
+  def self.for(size : Int32, *uses : Symbol) : Crypto::Secret
     for(*uses).new(size)
   end
 
@@ -98,9 +100,9 @@ abstract class Crypto::Secret
   end
 
   # Fills `Secret` with secure random data
-  def random : self
+  def random(random = Random::Secure) : self
     readwrite do |slice|
-      Random::Secure.random_bytes slice
+      random.random_bytes slice
     end
     self
   end

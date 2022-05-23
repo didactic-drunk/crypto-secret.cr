@@ -207,7 +207,7 @@ end
 
 **Only intended for use by crypto library authors**
 
-```
+```crystal
 class MySecret < Crypto::Secret
   # Choose one
   include Crypto::Secret::Stateless
