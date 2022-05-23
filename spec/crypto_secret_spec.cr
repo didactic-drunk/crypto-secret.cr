@@ -4,7 +4,7 @@ require "../src/crypto-secret"
 
 test_secret_class Crypto::Secret::Not
 test_secret_class Crypto::Secret::Bidet
-# test_secret_class Crypto::Secret::Guarded
+test_secret_class Crypto::Secret::Guarded
 
 describe Crypto::Secret do
   it ".for" do
