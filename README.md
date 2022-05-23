@@ -18,16 +18,14 @@ If you have a high security or high performance application see [which secret ty
 * Leaking data in to logs by overriding `inspect`
 * Wiping memory when the secret is no longer in use
 
-Each implementation may add additional protections
-
-* `Crypto::Secret::Key` - May use mlock, mprotect and canaries in future versions
-* `Crypto::Secret::Large` - May use mprotect in future versions
+### Provided secret classes
+* `Crypto::Secret::Guarded` - Guard pages, mprotect, doesn't appear in core dumps (os dependent)
+* `Crypto::Secret::Bidet` - Wipe only.  Low overhead.
 * `Crypto::Secret::Not` - It's not secret.  Doesn't wipe and no additional protection.
-
+* `Crypto::Secret::Todo` - Uses mlock, mprotect and canaries in future versions
 
 Secret providers may implement additional protections via:
-* `#noaccess`, `#readonly` or `#readwrite`
-* Using [mprotect]() to control access
+* `#noaccess`, `#readonly` or `#readwrite` via `mprotect`
 * Encrypting the data when not in use
 * Deriving keys on demand from a HSM
 * Preventing the Secret from entering swap ([mlock]())
@@ -94,6 +92,24 @@ secret = Crypto::Secret::Bidet.copy_from slice
 secret = Crypto::Secret::Bidet.new size_in_bytes
 secret.move_from slice
 ```
+
+### Optionally change the security level
+
+The default should be sufficient for most applications.  Do not change unless you have special needs.
+
+Password managers or cryptocurrency wallets may prefer :strong or :paranoid.
+
+Blockchain verifiers or apps that only handle high volume public info may prefer :lax.
+
+```crystal
+# Choose one
+Crypto::Secret::Config.setup :paranoid
+Crypto::Secret::Config.setup :strong
+#Crypto::Secret::Config.setup :default # automatic
+Crypto::Secret::Config.setup :lax
+```
+
+See [#setup](https://didactic-drunk.github.io/crypto-secret.cr/main/Crypto/Secret/Config.html) for further information.
 
 ## What is a Secret?
 

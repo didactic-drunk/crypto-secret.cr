@@ -4,8 +4,9 @@ require "./class_methods"
 # Interface to hold sensitive information (often cryptographic keys)
 #
 # ## Which class should I use?
-# * `Crypto::Secret::Key` - Use with small (<= 4096 bytes) keys
-# * `Crypto::Secret::Large` - Use for decrypted data that may stress mlock limits
+# * `Crypto::Secret::Todo` - Use with small (<= 4096 bytes) keys
+# * `Crypto::Secret::Guarded` - Use for decrypted data that may stress mlock limits
+# * `Crypto::Secret::Bidet` - Wipe only with no other protection.  General use and fast.
 # * `Crypto::Secret::Not` - Only use when you're sure the data isn't secret.  0 overhead.  No wiping.
 #
 # Other shards may provide additional `Secret` types ([sodium.cr](https://github.com/didactic-drunk/sodium.cr))
