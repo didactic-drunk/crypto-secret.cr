@@ -8,7 +8,7 @@ Secrets hold sensitive information
 
 The Secret interface manages limited time access to a secret and securely erases the secret when no longer needed.
 
-Multiple `Secret` classes exist.  Most of the time you shouldn't need to change the `Secret` type - the cryptographic library should have sane defaults.
+Multiple `Secret` classes exist.  Most of the time you shouldn't need to change the `Secret` type. The cryptographic library should have sane defaults.
 If you have a high security or high performance application see [which secret type should I use?](https://didactic-drunk.github.io/crypto-secret.cr/main/Crypto/Secret.html)
 
 
@@ -42,7 +42,7 @@ Secret providers may implement additional protections via:
    ```yaml
    dependencies:
      crypto-secret:
-       github: didactic-drunk/crypto-secret
+       github: didactic-drunk/crypto-secret.cr
    ```
 
 2. Run `shards install`
@@ -91,7 +91,7 @@ secret = Crypto::Secret::Bidet.move_from slice # erases slice
 # or
 secret = Crypto::Secret::Bidet.copy_from slice
 # or
-secret = Crypto::Secret::Bidet size_in_bytes
+secret = Crypto::Secret::Bidet.new size_in_bytes
 secret.move_from slice
 ```
 
@@ -106,8 +106,8 @@ That's complicated and specific to the application.  Some examples:
 
 Not secrets:
 
-* Digest output.  Except when used for key derivation, then it's a Secret, including the Digest state
-* IO::Memory or writing a file.  Except when the file is a password vault, cryptocurrency wallet, encrypted mail/messages, goat porn, maybe "normal" porn, sometimes scat porn, occassionally furry, not people porn
+* `Digest` output.  Except when used for key derivation, then it's a Secret, including the Digest state
+* `IO::Memory` or writing a file.  Except when the file is a password vault, cryptocurrency wallet, encrypted mail/messages, goat porn, maybe "normal" porn, sometimes scat porn, occassionally furry, not people porn
 
 ## Why?
 
