@@ -1,5 +1,6 @@
 require "./lib"
 require "./class_methods"
+require "./crystal"
 
 # Interface to hold sensitive information (often cryptographic keys)
 #
